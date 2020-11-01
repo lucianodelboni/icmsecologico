@@ -1,0 +1,34 @@
+{% extends "base_userext.html" %}
+{% block addhead %}
+{% endblock %}
+<style>
+  .b br{
+    display:block;
+  }
+</style>
+{% block content %}
+{% endblock %}
+{% block body %}
+  <h4> Seja bem-vinda, Prefeitura Municipal de {{mun_name}}!</h4>
+  <p> Por gentileza, selecione uma das opções abaixo ou utilize a barra de navegação na parte superior da página. </p>
+  
+<!-- talvez disabled seja controlado por uma variável -->
+  <div class="row container-fluid mg">
+    <div class="col-sm-2 d-flex justify-content-center">
+        <a role="button" class="btn btn-success btn-lg" href="{{url_for('userext_envios')}}" >Envios</a>
+    </div>
+    <div class="col-sm-2 d-flex justify-content-center">
+      <a role="button" class="btn btn-success btn-lg" href="{{url_for('userext_pendencias')}}" >Pendências</a>
+    </div>
+    <div class="col-sm-2 d-flex justify-content-center">
+      <a role="button" class="btn btn-success btn-lg" href="{{url_for('userext_recurso')}}" >Recurso</a>
+    </div>
+    <div class="col-sm-2 d-flex justify-content-center">
+      <a role="button" class="btn btn-success btn-lg" href="{{url_for('userext_resumo')}}" >Resumo</a>
+    </div>
+    <div class="col-sm-2 d-flex justify-content-center">
+      <a role="button" class="btn btn-success btn-lg" href="{{url_for('ICMS_indice')}}" >Índices</a>
+    </div>
+  </div>
+
+{% endblock %}

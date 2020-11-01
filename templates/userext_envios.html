@@ -1,0 +1,34 @@
+{% extends "base_userext.html" %}
+{% block addhead %}
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block body %}
+
+<div class ="row conainer-fluid col-md-5" style="margin:50px 50px 50px 40px;">
+	<div class="" style="margin:10px 20px;">
+		<h5>Adicionar cadastro de ICMS Ecológico para o ano de {{este_ano}}</h5>
+	</div>
+	<div>
+		<a role="button" href="#" class="btn btn-success btn-add d-flex justify-content-center"> + </a>
+	</div>
+</div>
+
+<table class="tbl">
+	<tr class= "tbl_h">
+		<th>N° de processo</th>
+		<th>Ano</th>
+		<th>Requerimento</th>
+		<th>Situação</th>
+		<th>Índice</th>
+	</tr>
+	{% for row in data %}
+	<tr class= "tbl_r">
+		{% for cell in row %}
+		<td>{{cell}}</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

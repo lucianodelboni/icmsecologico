@@ -1,0 +1,27 @@
+{% extends "base_usertech.html" %}
+{% block addhead %}
+{% endblock %}
+{% block content %}
+ 
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Histórico</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Análise</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Resumo</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Estatística</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{{url_for('logout')}}">Sair da conta</a>
+      </li>
+
+{% endblock %}
+{% block body %}
+  <h4> Seja bem-vindo, {{mun_name}}!</h4>
+  <p> Por gentileza, selecione uma das opções abaixo ou utilize a barra de navegação na parte superior da página. </p>
+  
+{% endblock %}

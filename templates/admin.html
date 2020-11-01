@@ -1,0 +1,43 @@
+{% extends "base_admin.html" %}
+{% block addhead %}
+{% endblock %}
+<style>
+	.b br{
+		display:block;
+	}
+</style>
+{% block content %}
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Histórico</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Estatística</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Controle de Acesso</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{{url_for('logout')}}">Sair da conta</a>
+      </li>
+{% endblock %}
+{% block body %}
+<div >
+		<br />
+	<h4>Bem-vindo, Sr. Diretor-Presidente!</h4>
+	<p> Por gentileza, selecione uma das opções abaixo ou utilize a barra de navegação na parte superior da página. </p>
+	
+	<div class="row container-fluid mg">
+		<div class="col-sm-2 d-flex justify-content-center">
+			<button type="button" class="btn btn-success btn-lg" >Opção 1</button>
+		</div>
+		<div class="col-sm-2 d-flex justify-content-center">
+			<button type="button" class="btn btn-success btn-lg" >Opção 2</button>
+		</div>
+		<div class="col-sm-2 d-flex justify-content-center">
+			<button type="button" class="btn btn-success btn-lg" >Opção 3</button>
+		</div>
+	</div>
+
+
+</div>
+{% endblock %}

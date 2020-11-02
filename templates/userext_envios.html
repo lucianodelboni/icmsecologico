@@ -14,21 +14,25 @@
 	</div>
 </div>
 
-<table class="tbl">
-	<tr class= "tbl_h">
-		<th>N° de processo</th>
-		<th>Ano</th>
-		<th>Requerimento</th>
-		<th>Situação</th>
-		<th>Índice</th>
-	</tr>
-	{% for row in data %}
-	<tr class= "tbl_r">
-		{% for cell in row %}
-		<td>{{cell}}</td>
+<div class="container-fluid justify-content-center">
+	<table class="tbl">
+		<tr class="tbl_h">
+			<th>Ano</th>
+			<th>N° de processo</th>
+			<th>Requerimento</th>
+			<th>Situação</th>
+			<th>Índice</th>
+			<th>Acesso</th>			
+		</tr>
+		{% for row in data %}
+		<tr class="tbl_r">
+			{% for cell in row %}
+			<td class="tbl_c">{{cell}}</td>
+			{% endfor %}
+			<td class="tbl_c"><a href="#">Visualizar</a></td>
+		</tr>
 		{% endfor %}
-	</tr>
-	{% endfor %}
-</table>
+	</table>
+</div>
 
 {% endblock %}

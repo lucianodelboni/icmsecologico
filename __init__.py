@@ -86,6 +86,12 @@ def userext_envios():
 		time_check = ctime(time_response.tx_time).split(" ")
 		session['ano'] = str(time_check[-1])
 		este_ano = session.get('ano', None)
+		munic = session.get('munic', None)
+		cursor.execute("SELECT * FROM table_name=?", (table_name)) #how to select the table as a variable? dictionary? Index?
+		data=[]	
+		for row in cursor:
+			data.append(row)
+
 		return render_template("userext_envios.html", este_ano=este_ano, data=data)
 	else:
 		return(render_template("nouser.html"))

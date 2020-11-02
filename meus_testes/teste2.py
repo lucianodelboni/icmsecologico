@@ -40,10 +40,15 @@ print(clone2)
 if clone == check[0] and clone2 == check2[0]:
 	# Grab all the rows in our database table
 	cursor.execute('SELECT * FROM Test')
-
+	a=[]
 	# Loop through the Results
 	for row in cursor:
 		print(row)
+		a.append(str(row))
+
+
+
+	print(a)
 
 	print("you've got it!")
 else:

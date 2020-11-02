@@ -30,3 +30,27 @@
 	font-weight: bold;
 	width:120%;
 }
+
+.tbl_h{
+	color: white;
+	border: 1px solid #dddddd;
+	text-align: center;
+	background-image: linear-gradient(to right, rgb(0, 200, 0), rgb(0, 153, 0));
+
+}
+
+.tbl_r, .tbl_c{
+	text-align: center;
+	padding: 10px;
+	border: 1px solid #dddddd;
+}
+
+.tbl{
+	border-spacing: 1;
+	width: 70%;
+	border: 1px solid #dddddd;
+	border-collapse: collapse;
+}
+th{
+	border: 1px solid #dddddd;
+}

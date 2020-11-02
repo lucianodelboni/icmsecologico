@@ -71,7 +71,6 @@ def home():
 	
 	return render_template("login.html")
 
-x = 1
 # Seção dedicada ao roteamento de páginas do usuário externo (municipio)
 @app.route("/userext")
 def userext():

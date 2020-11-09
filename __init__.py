@@ -87,7 +87,7 @@ def userext_envios():
 		session['ano'] = str(time_check[-1])
 		este_ano = session.get('ano', None)
 		munic = session.get('munic', None)
-		cursor.execute("SELECT * FROM table_name=?", (table_name)) #how to select the table as a variable? dictionary? Index?
+		cursor.execute("SELECT * FROM table_name=?", (table_name)) #how to select the table as a variable? dictionary? Index? Use only one table genius. One for the info another for the files.
 		data=[]	
 		for row in cursor:
 			data.append(row)

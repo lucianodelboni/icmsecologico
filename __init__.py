@@ -22,15 +22,6 @@ cnxn = pyodbc.connect('DRIVER={ODBC Driver 11 for SQL Server}; \
 
 cursor = cnxn.cursor()
 
-#declaração de variáveis globais
-data = (
-
-	('john', 'CEO', 49, "retired", "red"),
-	('Mary', 'CTO', 32, "active", "blue"),
-
-)
-
-
 # criando roteamento para endereço com barras simples ou home e definindo autenticação de login
 @app.route("/home", methods=["POST", "GET"])
 @app.route("/", methods=["POST", "GET"])
@@ -87,7 +78,7 @@ def userext_envios():
 		session['ano'] = str(time_check[-1])
 		este_ano = session.get('ano', None)
 		munic = session.get('munic', None)
-		cursor.execute("SELECT * FROM table_name=?", (table_name)) #how to select the table as a variable? dictionary? Index? Use only one table genius. One for the info another for the files.
+		cursor.execute("SELECT anoanalise, numprocesso, reqtipo, situacao, indice  FROM envio_preview WHERE mun=? ORDER BY anoanalise DESC", (munic))
 		data=[]	
 		for row in cursor:
 			data.append(row)

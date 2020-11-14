@@ -1,5 +1,5 @@
 #-*- coding: UTF-8 -*-
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, flash
 from time import ctime
 import ntplib
 import pyodbc
@@ -21,6 +21,7 @@ cnxn = pyodbc.connect('DRIVER={ODBC Driver 11 for SQL Server}; \
 					  Trusted_Connection=yes;')
 
 cursor = cnxn.cursor()
+
 
 # criando roteamento para endereço com barras simples ou home e definindo autenticação de login
 @app.route("/home", methods=["POST", "GET"])
@@ -86,6 +87,21 @@ def userext_envios():
 		return render_template("userext_envios.html", este_ano=este_ano, data=data)
 	else:
 		return(render_template("nouser.html"))
+
+@app.route("/userext/envios/novo")
+def userext_envios_novo():
+	if "user" in session:
+		add_lock = cursor.execute("SELECT addlock FROM settings").fetchone() # trava para controlar a partir de quando um novo requerimento de ICMS pode ser feito
+		if add_lock[0] == False:
+			este_ano = session.get('ano', None)
+			req_check = cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano=?", (este_ano))
+			if req_check[0] == False:
+				return render_template("userext_envios_novo.html")
+				#cursor.execute("") inserir update de dados na tabela 
+			else:
+				pass #inserir ação popover (bootstrap) para reqcheck true
+		else:
+			pass #inserir ação popover (bootstrap) para addlock true
 
 @app.route("/userext/pendencias")
 def userext_pendencias():

@@ -22,7 +22,6 @@ cnxn = pyodbc.connect('DRIVER={ODBC Driver 11 for SQL Server}; \
 
 cursor = cnxn.cursor()
 
-
 # criando roteamento para endereço com barras simples ou home e definindo autenticação de login
 @app.route("/home", methods=["POST", "GET"])
 @app.route("/", methods=["POST", "GET"])
@@ -94,10 +93,11 @@ def userext_envios_novo():
 		add_lock = cursor.execute("SELECT addlock FROM settings").fetchone() # trava para controlar a partir de quando um novo requerimento de ICMS pode ser feito
 		if add_lock[0] == False:
 			este_ano = session.get('ano', None)
-			req_check = cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano=?", (este_ano))
-			if req_check[0] == False:
+			munic = session.get('munic', None)
+			req_check = cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano_analise=? AND mun=?", (este_ano), (munic)).fetchone() # Verifica se o usuário já iniciou o preenchimento de um requerimento
+			if req_check[0] == None:
 				return render_template("userext_envios_novo.html")
-				#cursor.execute("") inserir update de dados na tabela 
+				#cursor.execute("INSERT INTO res_urb_data (mun, ano_base, ano_analise, *outras") inserir update de dados na tabela 
 			else:
 				pass #inserir ação popover (bootstrap) para reqcheck true
 		else:

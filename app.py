@@ -1,7 +1,6 @@
 #-*- coding: UTF-8 -*-
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from time import ctime
-from packages import SQL_connection
 import ntplib
 import pyodbc
 
@@ -11,8 +10,18 @@ app.secret_key = "master123"
 ntp_client = ntplib.NTPClient()
 time_response = ntp_client.request('br.pool.ntp.org')
 
-#create sql connection and a cursor to browser the sql tables
-sql_connect()
+# define o nome e database no servidor alvo
+server = 'DESKTOP-S9KLVST\SQLEXPRESS'
+database = 'ICMSTest'
+
+# define a string de conexão com o SQL Server
+cnxn = pyodbc.connect('DRIVER={ODBC Driver 11 for SQL Server}; \
+					  SERVER=' + server + '; \
+					  DATABASE=' + database + ';\
+					  Trusted_Connection=yes;')
+
+cursor = cnxn.cursor()
+
 
 # criando roteamento para endereço com barras simples ou home e definindo autenticação de login
 @app.route("/home", methods=["POST", "GET"])

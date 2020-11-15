@@ -1,26 +1,15 @@
 #-*- coding: UTF-8 -*-
 from flask import Flask, render_template, redirect, url_for, request, session, flash
+from packages import sql_connection as sql
 from time import ctime
 import ntplib
-import pyodbc
 
-#configuração inicial do flask, session e ntplib
+#configuração inicial do flask, secret key do session e ntplib
 app = Flask(__name__)
 app.secret_key = "master123"
 ntp_client = ntplib.NTPClient()
 time_response = ntp_client.request('br.pool.ntp.org')
 
-# define o nome e database no servidor alvo
-server = 'DESKTOP-S9KLVST\SQLEXPRESS'
-database = 'ICMSTest'
-
-# define a string de conexão com o SQL Server
-cnxn = pyodbc.connect('DRIVER={ODBC Driver 11 for SQL Server}; \
-					  SERVER=' + server + '; \
-					  DATABASE=' + database + ';\
-					  Trusted_Connection=yes;')
-
-cursor = cnxn.cursor()
 
 # criando roteamento para endereço com barras simples ou home e definindo autenticação de login
 @app.route("/home", methods=["POST", "GET"])
@@ -38,10 +27,10 @@ def home():
 		
 		#Procura se existe um usuario externo/interno com as credenciais de login e senha e redireciona para sua pagina
 		else:
-			municipio = cursor.execute("SELECT MUN FROM auth_userext WHERE username=?", (username)).fetchone()
-			UsernameData = cursor.execute("SELECT username FROM auth_userext WHERE username=?", (username)).fetchone()
-			PasswordData = cursor.execute("SELECT password FROM auth_userext WHERE username=?", (username)).fetchone()
-			TypeofUser	= cursor.execute("SELECT tipo FROM auth_userext WHERE username=?", (username)).fetchone()
+			municipio = sql.cursor.execute("SELECT MUN FROM auth_userext WHERE username=?", (username)).fetchone()
+			UsernameData = sql.cursor.execute("SELECT username FROM auth_userext WHERE username=?", (username)).fetchone()
+			PasswordData = sql.cursor.execute("SELECT password FROM auth_userext WHERE username=?", (username)).fetchone()
+			TypeofUser	= sql.cursor.execute("SELECT tipo FROM auth_userext WHERE username=?", (username)).fetchone()
 
 			#Caso o usuario nao esteja na base de dados, redireciona para uma pagina de login falhou
 			if UsernameData == None or PasswordData == None:
@@ -78,9 +67,9 @@ def userext_envios():
 		session['ano'] = str(time_check[-1])
 		este_ano = session.get('ano', None)
 		munic = session.get('munic', None)
-		cursor.execute("SELECT anoanalise, numprocesso, reqtipo, situacao, indice  FROM envio_preview WHERE mun=? ORDER BY anoanalise DESC", (munic))
+		sql.cursor.execute("SELECT anoanalise, numprocesso, reqtipo, situacao, indice  FROM envio_preview WHERE mun=? ORDER BY anoanalise DESC", (munic))
 		data=[]	
-		for row in cursor:
+		for row in sql.cursor:
 			data.append(row)
 
 		return render_template("userext_envios.html", este_ano=este_ano, data=data)
@@ -90,11 +79,11 @@ def userext_envios():
 @app.route("/userext/envios/novo")
 def userext_envios_novo():
 	if "user" in session:
-		add_lock = cursor.execute("SELECT addlock FROM settings").fetchone() # trava para controlar a partir de quando um novo requerimento de ICMS pode ser feito
+		add_lock = sql.cursor.execute("SELECT addlock FROM settings").fetchone() # trava para controlar a partir de quando um novo requerimento de ICMS pode ser feito
 		if add_lock[0] == False:
 			este_ano = session.get('ano', None)
 			munic = session.get('munic', None)
-			req_check = cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano_analise=? AND mun=?", (este_ano), (munic)).fetchone() # Verifica se o usuário já iniciou o preenchimento de um requerimento
+			req_check = sql.cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano_analise=? AND mun=?", (este_ano), (munic)).fetchone() # Verifica se o usuário já iniciou o preenchimento de um requerimento
 			if req_check[0] == None:
 				return render_template("userext_envios_novo.html")
 				#cursor.execute("INSERT INTO res_urb_data (mun, ano_base, ano_analise, *outras") inserir update de dados na tabela 

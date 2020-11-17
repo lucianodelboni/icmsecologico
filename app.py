@@ -83,14 +83,17 @@ def userext_envios_novo():
 		if add_lock[0] == False:
 			este_ano = session.get('ano', None)
 			munic = session.get('munic', None)
+			ano_base = int(este_ano)-1
 			req_check = sql.cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano_analise=? AND mun=?", (este_ano), (munic)).fetchone() # Verifica se o usuário já iniciou o preenchimento de um requerimento
-			if req_check[0] == None:
+			if req_check[0] == None: # existe um erro nesta parte do código, corrigir mais tarde
+				sql.cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck) VALUES (?, ?, ?, 'True')", (munic), (ano_base), (este_ano))
 				return render_template("userext_envios_novo.html")
-				#cursor.execute("INSERT INTO res_urb_data (mun, ano_base, ano_analise, *outras") inserir update de dados na tabela 
 			else:
 				pass #inserir ação popover (bootstrap) para reqcheck true
 		else:
 			pass #inserir ação popover (bootstrap) para addlock true
+	else:
+		return(render_template("nouser.html"))
 
 @app.route("/userext/pendencias")
 def userext_pendencias():

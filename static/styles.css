@@ -51,6 +51,12 @@
 	border: 1px solid #dddddd;
 	border-collapse: collapse;
 }
+
+.warning-message{
+	color: tomato;
+	font-style: italic;
+}
+
 th{
 	border: 1px solid #dddddd;
 }

@@ -10,8 +10,10 @@
 		<h5>Adicionar cadastro de ICMS Ecológico para o ano de {{este_ano}}</h5>
 	</div>
 	<div>
-
 		<a role="button" href="{{url_for('userext_envios_novo')}}" class="btn btn-success btn-add d-flex justify-content-center"> + </a> <!--chama um link que vai conferir se a função de cadastro já foi liberada pelo administrador (login de gerente) -->
+	</div>
+	<div class="warning-message">
+		<p>{{msg}}</p>
 	</div>
 </div>
 

@@ -58,7 +58,7 @@ def userext():
 		munic = session.get('munic', None)
 		return render_template("userext.html", mun_name=munic)
 	else:
-		return(render_template("nouser.html"))
+		return render_template("nouser.html")
 
 @app.route("/userext/envios")
 def userext_envios():
@@ -71,10 +71,9 @@ def userext_envios():
 		data=[]	
 		for row in sql.cursor:
 			data.append(row)
-
 		return render_template("userext_envios.html", este_ano=este_ano, data=data)
 	else:
-		return(render_template("nouser.html"))
+		return render_template("nouser.html")
 
 @app.route("/userext/envios/novo")
 def userext_envios_novo():
@@ -85,36 +84,48 @@ def userext_envios_novo():
 			munic = session.get('munic', None)
 			ano_base = int(este_ano)-1
 			req_check = sql.cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano_analise=? AND mun=?", (este_ano), (munic)).fetchone() # Verifica se o usuário já iniciou o preenchimento de um requerimento
-			if req_check[0] == None: # existe um erro nesta parte do código, corrigir mais tarde
+			if req_check == None:
 				sql.cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck) VALUES (?, ?, ?, 'True')", (munic), (ano_base), (este_ano))
+				sql.cursor.execute("INSERT INTO envio_preview(mun, anoanalise, numprocesso, reqtipo, situacao, indice) VALUES (?,?, 'SE000001/2020','UC + RS', 'Novo', '0')",(munic), (este_ano))
+				sql.cnxn.commit()
 				return render_template("userext_envios_novo.html")
 			else:
-				pass #inserir ação popover (bootstrap) para reqcheck true
+				time_check = ctime(time_response.tx_time).split(" ")
+				session['ano'] = str(time_check[-1])
+				este_ano = session.get('ano', None)
+				munic = session.get('munic', None)
+				sql.cursor.execute("SELECT anoanalise, numprocesso, reqtipo, situacao, indice  FROM envio_preview WHERE mun=? ORDER BY anoanalise DESC", (munic))
+				data=[]	
+				for row in sql.cursor:
+					data.append(row)
+				message = "O requerimento para este ano já foi criado, por favor consultar na tabela abaixo!"
+				return render_template("userext_envios.html", msg=message, este_ano=este_ano, data=data)
+
 		else:
 			pass #inserir ação popover (bootstrap) para addlock true
 	else:
-		return(render_template("nouser.html"))
+		return render_template("nouser.html")
 
 @app.route("/userext/pendencias")
 def userext_pendencias():
 	if "user" in session:
 		return render_template("userext_pendencias.html")
 	else:
-		return(render_template("nouser.html"))
+		return render_template("nouser.html")
 
 @app.route("/userext/recurso")
 def userext_recurso():
 	if "user" in session:
 		return render_template("userext_recurso.html")
 	else:
-		return(render_template("nouser.html"))
+		return render_template("nouser.html")
 
 @app.route("/userext/resumo")
 def userext_resumo():
 	if "user" in session:
 		return render_template("userext_resumo.html")
 	else:
-		return(render_template("nouser.html"))
+		return render_template("nouser.html")
 
 
 # Seção dedicada ao roteamento de páginas do usuário interno (Imasul), incluindo admin.
@@ -123,14 +134,14 @@ def usertech():
 	if "user" in session:
 		return render_template("usertech.html")
 	else:
-		return(render_template("nouser.html"))
+		return render_template("nouser.html")
 
 @app.route("/admin")
 def admin():
 	if "user" in session:
 		return render_template("admin.html")
 	else:
-		return(render_template("nouser.html"))
+		return render_template("nouser.html")
 
 
 # Seção dedicada ao roteamento de páginas de acesso público.

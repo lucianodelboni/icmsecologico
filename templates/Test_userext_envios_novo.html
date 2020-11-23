@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=UTF-8>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}" />
+
+	<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet"><!--novo estilo toggler-->
+
+	<title>Siseco - Imasul</title>
+	{% block addhead %} {% endblock %}
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+		  <h5 class="navbar-brand" style="color:white"></h5>
+		  <div class="collapse navbar-collapse" id="navbarNav">
+		    <ul class="navbar-nav">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="#"> Página Inicial <span class="sr-only">(current)</span></a>
+		      </li>
+			  <li class="nav-item">
+				<a class="nav-link active" href="#">Envios</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link active" href="#">Pendências</a>
+			  </li>
+				    <!-- navlink disabled quando for bloquear o acesso a algum item-->
+			  <li class="nav-item">
+				<a class="nav-link active" href="#">Recurso</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link active" href="#">Resumo</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link active" href="#">Índices</a>
+			  </li>
+			  <li class="nav-item" method="POST">
+				<a class="nav-link active" href="#">Sair da conta</a>
+			  </li>
+		    {% block content %}
+		    {% endblock %}
+		    </ul>
+		  </div>
+		  <br />
+		  <h4 align="right"> 
+          <font face="Helvetica" size= "4" color="white"> 
+          Sistema Informatizado de ICMS Ecológico de Mato Grosso do Sul - Siseco/MS
+          </font> &nbsp; &nbsp; &nbsp; &nbsp;
+      	  </h4>
+		</nav>
+
+
+
+
+
+
+		<form method="POST" action="/" style="margin:30px;">
+			<div class="form-group">
+				<h5> Parâmetro 1 - Plano Municipal de Gestão Integrada de Resíduos Sólidos</h5>
+			</div>
+			<div class="row">
+				<div class="col col-1">
+					<p>Requerer?</p>
+				</div>
+				<div class="col col-1">
+					<input type="checkbox" unchecked name="firstcheckbox" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" >
+				</div>
+				<div class="col col-1">
+					<input type="Submit" value="Confirmar">
+				</div>
+			</div>	
+			<div>
+				<label for="PMGIRS">O último plano apresentado foi:</label>
+				<input type="text" class="col-6" disabled placeholder="{{plano}}"></input>
+				<a type="button" class="btn btn-info" href="#">Baixar</a>
+			</div>
+
+		</form>
+
+
+
+
+
+
+
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+		<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script><!--novo estilo toggler-->
+	</body>
+</html>

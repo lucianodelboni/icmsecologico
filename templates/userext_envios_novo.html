@@ -2,7 +2,25 @@
 {% block addhead %}
 {% endblock %}
 {% block content %}
-<h1>Construir formulário nesta seção</h1>
 {% endblock %}
 {% block body %}
+
+<form action="">
+	<div class="form-group">
+		<h5> Parâmetro 1 - Plano Municipal de Gestão Integrada de Resíduos Sólidos</h5>
+	</div>
+	<div class="row">
+		<div class="col">
+			<p>Requerer parâmetro 1?</p>
+		</div>
+		<div class="col">
+			<input type="checkbox" data-toggle="toggle"></input>
+		</div>
+	</div>	
+	<div>
+		<label for="PMGIRS">O último plano apresentado foi:</label>
+		<input type="text"></input>
+	</div>
+</form>
+
 {% endblock %}

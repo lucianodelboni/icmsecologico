@@ -52,43 +52,119 @@
 
 
 
+<form method="POST" action="/">
+	
 
+	<!--representação do item 1.1 -->
 
+	<div class="d-flex justify-content-center" style="margin-top:10px;">
+		<h5> Parâmetro 1 - Plano Municipal de Gestão Integrada de Resíduos Sólidos</h5>
+	</div>
 
-		<form method="POST" action="/" style="margin:30px;">
-			<div class="form-group">
-				<h5> Parâmetro 1 - Plano Municipal de Gestão Integrada de Resíduos Sólidos</h5>
+	<div class="container-fluid divisorias__form">
+		<div>
+			<p class="itens"> Item 1.1 - Plano Municipal de Gestão Integrada de Resíduos Sólidos</p>
+		</div>
+		<div class="row">
+			<div class="col col-1">
+				<p>Requerer?</p>
 			</div>
+			<div class="col col-1">
+				<a data-toggle="collapse" data-target="#ativar1_1">
+				<input type="checkbox" unchecked name="1_1PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" >
+				</a>
+			</div>
+		</div>
+		<div id="ativar1_1" class="collapse">	
+			<div>
+				<label for="PMGIRS">O último plano apresentado foi:</label>
+				<input type="text" class="col-7" disabled placeholder="{{plano}}"></input>
+				<a type="button" class="btn btn-primary" href="#">Baixar</a>
+			</div>
+			<div>
+				<p>Caso deseje anexar outro, clicar no botão abaixo:</p>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal1">
+				  Anexar
+				</button>
+
+				<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="#modal2" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="modal2">Anexar novo PMGIRS</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+						<div class="input-group">
+							<input type="file" name="anexo_pmgirs">
+						</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary">Salvar</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			</div>	
+			<div class= "col col-5">
+
+			</div> &nbsp;&nbsp;
+		</div>
+	</div>
+	
+
+	<!--representação do item 1.2.1 -->
+	<div class="container-fluid divisorias__form">
+		<div>
+			<p class="itens"> Item 1.2 - Execução do Plano Municipal de Gestão Integrada de Resíduos Sólidos</p>
+		</div>
+		<div style="margin-left:20px;">
+			<p class="itens"> Item 1.2.1 - Acondicionamento</p>
 			<div class="row">
 				<div class="col col-1">
 					<p>Requerer?</p>
 				</div>
 				<div class="col col-1">
-					<input type="checkbox" unchecked name="firstcheckbox" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" >
+					<a data-toggle="collapse" data-target="#ativar1_2_1">
+						<input type="checkbox" unchecked name="1_2_1PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" >
+					</a>
 				</div>
-			</div>	
-			<div>
-				<label for="PMGIRS">O último plano apresentado foi:</label>
-				<input type="text" class="col-5" disabled placeholder="{{plano}}"></input>
-				<a type="button" class="btn btn-info" href="#">Baixar</a>
 			</div>
-			<div>
-				<p>Caso deseje anexar outro, utilizar o campo abaixo:</p>
-			</div>	
-			<div class= "col col-5">
-				<div class="input-group">
-				  <div class="input-group-prepend">
-				    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-				  </div>
-		 		 <div class="custom-file">
-				    <input type="file" class="custom-file-input" id="customFileLang" lang="pt">
-				   <label class="custom-file-label" for="customFileLang">Escolha o arquivo...</label>
+			<div id="ativar1_2_1" class="collapse">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+				  Anexar
+				</button>
+
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">Anexar novo PMGIRS</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				      	<p>segundo modal!</p>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary">Salvar</button>
+				      </div>
+				    </div>
 				  </div>
 				</div>
-			</div>		
-	
+			</div>
+		</div>	
+	</div>
 
-		</form>
+
+</form>
+
+
 
 
 

@@ -10,10 +10,18 @@
 		<h5>Adicionar cadastro de ICMS Ecológico para o ano de {{este_ano}}</h5>
 	</div>
 	<div>
-		<a role="button" href="{{url_for('userext_envios_novo')}}" class="btn btn-success btn-add d-flex justify-content-center"> + </a> <!--chama um link que vai conferir se a função de cadastro já foi liberada pelo administrador (login de gerente) -->
-	</div>
-	<div class="warning-message">
-		<p>{{msg}}</p>
+		{% if add_lock == True: %}
+			<a href="#" data-toggle="popover" title="Aviso" data-trigger="focus" data-content="O Imasul ainda não liberou a criação de novos requerimentos, por gentileza aguardar notificação de liberação!" class="btn btn-success btn-add d-flex justify-content-center"> + </a>
+
+		{% else %}
+			{% if req_check != None: %}
+				<a href="#" data-toggle="popover" title="Aviso" data-trigger="focus" data-content="O requerimento para este ano já foi criado, por favor consultar na tabela abaixo!" class="btn btn-success btn-add d-flex justify-content-center"> + </a>
+			
+			{% else %}
+				<a role="button" href="{{url_for('userext_envios_novo')}}"class="btn btn-success btn-add d-flex justify-content-center"> + </a>
+
+			{% endif %}
+		{% endif %}
 	</div>
 </div>
 

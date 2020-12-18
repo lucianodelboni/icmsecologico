@@ -1,0 +1,27 @@
+{% extends "base_admin.html" %}
+{% block addhead %}
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block body%}
+
+<div class="row col-md-10">
+	<table style="margin:40px 10px;">
+		<td style="border: solid 1px;">
+			<p>Trava para edição do ICMS Ecológico:&nbsp; &nbsp;</p>
+		</td>
+		<td style="border: solid 1px; padding:0px 10px;">
+			<p>{{addlock_status}}</p>
+		</td>
+		<td style="padding: 0px 10px;">
+			<a role="button" href="#" class="btn btn-danger justify-content-center">Alterar</a>
+			<!--Fazer este botão abrir um modal onde deve-se confirmar a abertura do ICMS Ecológico-->
+		</td>
+		<td>
+			<a role="button" href="#" class="btn btn-info justify-content-center">Agendar</a>
+		</td>
+	</table>
+</div>
+{% endblock %}
+
+

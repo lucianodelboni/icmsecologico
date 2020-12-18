@@ -1,43 +1,29 @@
 {% extends "base_admin.html" %}
 {% block addhead %}
 {% endblock %}
-<style>
-	.b br{
-		display:block;
-	}
-</style>
 {% block content %}
-      <li class="nav-item">
-        <a class="nav-link active" href="#">Histórico</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="#">Estatística</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="#">Controle de Acesso</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="{{url_for('logout')}}">Sair da conta</a>
-      </li>
 {% endblock %}
 {% block body %}
 <div >
-		<br />
-	<h4>Bem-vindo, Sr. Diretor-Presidente!</h4>
+	<br />
+	<h4>Bem-vindo, Administrador do Sistema de ICMS Ecológico!</h4>
 	<p> Por gentileza, selecione uma das opções abaixo ou utilize a barra de navegação na parte superior da página. </p>
-	
-	<div class="row container-fluid mg">
-		<div class="col-sm-2 d-flex justify-content-center">
-			<button type="button" class="btn btn-success btn-lg" >Opção 1</button>
-		</div>
-		<div class="col-sm-2 d-flex justify-content-center">
-			<button type="button" class="btn btn-success btn-lg" >Opção 2</button>
-		</div>
-		<div class="col-sm-2 d-flex justify-content-center">
-			<button type="button" class="btn btn-success btn-lg" >Opção 3</button>
-		</div>
-	</div>
+</div>	
+
+  <div class="row container-fluid mg">
+    <div class="col-lg-2 d-flex justify-content-center">
+        <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_historico')}}" >Histórico</a>
+    </div>
+    <div class="col-lg-2 d-flex justify-content-center">
+      <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_estatisticas')}}" >Estatística</a>
+    </div>
+    <div class="col-lg-2 d-flex justify-content-center">
+      <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_configuracoes')}}" >Configurações</a>
+    </div>
+    <div class="col-lg-2 d-flex justify-content-center">
+      <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_usermgmt')}}" >Usuários</a>
+    </div>
+  </div>
 
 
-</div>
 {% endblock %}

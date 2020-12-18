@@ -1,3 +1,8 @@
+
+.b br{
+	display:block;
+}
+
 .bg {
 	background: url('layout.png') no-repeat;
 	width: 100%;
@@ -51,11 +56,6 @@
 	border: 1px solid #dddddd;
 	border-collapse: collapse;
 	overflow-x: auto;
-}
-
-.warning-message{
-	color: tomato;
-	font-style: italic;
 }
 
 .divisorias__form{

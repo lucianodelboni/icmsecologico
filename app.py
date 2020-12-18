@@ -32,7 +32,14 @@ def ver_dados_envios():
 		data.append(row)
 	return data
 
+def ver_addlock():
+	add_lock = sql.cursor.execute("SELECT addlock FROM settings").fetchone()
+	return add_lock
 
+#def ver_dados_historico():
+
+
+#def valida_usuario(): para que o usuário em uma seção não interfira em um de outra
 
 
 # criando roteamento para endereço com barras simples ou home e definindo autenticação de login
@@ -75,7 +82,7 @@ def home():
 	
 	return render_template("login.html")
 
-# Seção dedicada ao roteamento de páginas do usuário externo (municipio)
+# Seção de endpoints dedicada ao roteamento de páginas do usuário externo (municipio)
 @app.route("/userext")
 def userext():
 	if "user" in session:
@@ -92,7 +99,7 @@ def userext_envios():
 		este_ano = session.get('ano', None)
 		munic = session.get('munic', None)
 		data = ver_dados_envios()
-		add_lock = sql.cursor.execute("SELECT addlock FROM settings").fetchone() # trava para controlar a partir de quando um novo requerimento de ICMS pode ser feito
+		add_lock = ver_addlock() # trava para controlar a partir de quando um novo requerimento de ICMS pode ser feito
 		req_check = sql.cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano_analise=? AND mun=?", (este_ano), (munic)).fetchone()
 		return render_template("userext_envios.html", este_ano=este_ano, data=data, add_lock=add_lock[0], req_check=req_check)
 	else:
@@ -134,7 +141,7 @@ def userext_resumo():
 		return render_template("nouser.html")
 
 
-# Seção dedicada ao roteamento de páginas do usuário interno (Imasul), incluindo admin.
+# Seção de endpoints dedicada ao roteamento de páginas do usuário interno (Imasul).
 @app.route("/usertech")
 def usertech():
 	if "user" in session:
@@ -142,12 +149,46 @@ def usertech():
 	else:
 		return render_template("nouser.html")
 
+
+
+
+# Seção de endpoints dedicada ao roteamento de páginas do usuário administrador.
 @app.route("/admin")
 def admin():
 	if "user" in session:
 		return render_template("admin.html")
 	else:
 		return render_template("nouser.html")
+
+@app.route("/admin/historico")
+def admin_historico():
+	if "user" in session:
+		return render_template("admin_historico.html")
+	else:
+		return render_template("nouser.html")
+
+@app.route("/admin/estatisticas")
+def admin_estatisticas():
+	if "user" in session:
+		return render_template("admin_estatisticas.html")
+	else:
+		return render_template("nouser.html")
+
+@app.route("/admin/configuracoes")
+def admin_configuracoes():
+	if "user" in session:
+		add_lock = ver_addlock()
+		return render_template("admin_configuracoes.html", addlock_status=str(add_lock[0]))
+	else:
+		return render_template("nouser.html")
+
+@app.route("/admin/usermgmt")
+def admin_usermgmt():
+	if "user" in session:
+		return render_template("admin_usermgmt.html")
+	else:
+		return render_template("nouser.html")
+
 
 
 # Seção dedicada ao roteamento de páginas de acesso público.

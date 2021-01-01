@@ -36,6 +36,18 @@ def ver_addlock():
 	add_lock = sql.cursor.execute("SELECT addlock FROM settings").fetchone()
 	return add_lock
 
+def change_addlock():
+	ver_addlock()
+	if add_lock[0] == False:
+		sql.cursor.execute("UPDATE settings SET addlock=?", (True))
+		sql.cnxn.commit()
+	else:
+		sql.cursor.execute("UPDATE settings SET addlock=?", (False))
+		sql.cnxn.commit()
+	return redirect(url_for("admin_configuracoes"))
+
+
+
 #def ver_dados_historico():
 
 

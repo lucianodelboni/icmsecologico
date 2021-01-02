@@ -1,0 +1,4 @@
+mysql_host: 'lucknfx5.mysql.pythonanywhere-services.com'
+mysql_user: 'lucknfx5'
+mysql_password: 'Batata789'
+mysql_db: 'UserAuth'

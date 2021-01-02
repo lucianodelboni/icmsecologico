@@ -1,14 +1,20 @@
 #-*- coding: UTF-8 -*-
 from flask import Flask, render_template, redirect, url_for, request, session, flash
-from packages import sql_connection as sql
-from time import ctime
-import ntplib
+from flask_mysqldb import MySQL
+import yaml
 
-#configuração inicial do flask, secret key do session e ntplib
+#configuração inicial do flask, secret key do session e MySQL
 app = Flask(__name__)
 app.secret_key = "master123"
-ntp_client = ntplib.NTPClient()
-time_response = ntp_client.request('br.pool.ntp.org')
+db = yaml.load(open('db.yaml'))
+app.config['MYSQL_HOST'] = db['mysql_host']
+app.config['MYSQL_USER'] = db['mysql_user']
+app.config['MYSQL_PASSWORD'] = db['mysql_password']
+app.config['MYSQL_DB'] = db['mysql_db']
+
+mysql = MySQL(app)
+sql.cursor = mysql.connection.cursor()
+
 
 # função para gerar um número de processo sequencial
 def ger_num_processo():
@@ -52,34 +58,24 @@ def home():
 		password = str(request.form["pass"])
 		session["user"] = username
 
-		#Por enquanto não precisa constar em base de dados posteriormente pode ser integrado ao Siriema, por enquanto conta com login/pass fixo para admin
-		if username == "imasul" and password == "123":
-			return redirect(url_for("admin"))
-		
-		#Procura se existe um usuario externo/interno com as credenciais de login e senha e redireciona para sua pagina
+		municipio = sql.cursor.execute("SELECT MUN FROM UserAuth WHERE username=?", (username)).fetchone()
+		UsernameData = sql.cursor.execute("SELECT username FROM UserAuth WHERE username=?", (username)).fetchone()
+		PasswordData = sql.cursor.execute("SELECT password FROM UserAuth WHERE username=?", (username)).fetchone()
+		TypeofUser	= sql.cursor.execute("SELECT type FROM UserAuth WHERE username=?", (username)).fetchone()
+
+		#Caso o usuario nao esteja na base de dados, redireciona para uma pagina de login falhou
+		if UsernameData == None or PasswordData == None:
+			return render_template("loginfail.html")
+		#Caso contrário, realiza o login na página certa
 		else:
-			municipio = sql.cursor.execute("SELECT MUN FROM auth_userext WHERE username=?", (username)).fetchone()
-			UsernameData = sql.cursor.execute("SELECT username FROM auth_userext WHERE username=?", (username)).fetchone()
-			PasswordData = sql.cursor.execute("SELECT password FROM auth_userext WHERE username=?", (username)).fetchone()
-			TypeofUser	= sql.cursor.execute("SELECT tipo FROM auth_userext WHERE username=?", (username)).fetchone()
-
-			#Caso o usuario nao esteja na base de dados, redireciona para uma pagina de login falhou
-			if UsernameData == None or PasswordData == None:
-				return render_template("loginfail.html")
-			#Caso contrário, realiza o login na página certa
-			else:
-				if municipio != None:
-					session["munic"] = str(municipio[0])
-
+			if municipio != None:
+				session["munic"] = str(municipio[0])
 				if username == UsernameData[0] and password == PasswordData[0] and TypeofUser[0] == "ext" :
-					return redirect(url_for("userext"))
-	
-				if username == UsernameData[0] and password == PasswordData[0] and TypeofUser[0] == "tech" :
-					return redirect(url_for("usertech"))
-
+				return redirect(url_for("userext"))
+			if username == UsernameData[0] and password == PasswordData[0] and TypeofUser[0] == "tech" :
+				return redirect(url_for("usertech"))
 				else:
-					return render_template("loginfail.html")
-	
+				return render_template("loginfail.html")
 	return render_template("login.html")
 
 # Seção de endpoints dedicada ao roteamento de páginas do usuário externo (municipio)

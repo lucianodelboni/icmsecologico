@@ -36,18 +36,6 @@ def ver_addlock():
 	add_lock = sql.cursor.execute("SELECT addlock FROM settings").fetchone()
 	return add_lock
 
-def change_addlock():
-	ver_addlock()
-	if add_lock[0] == False:
-		sql.cursor.execute("UPDATE settings SET addlock=?", (True))
-		sql.cnxn.commit()
-	else:
-		sql.cursor.execute("UPDATE settings SET addlock=?", (False))
-		sql.cnxn.commit()
-	return redirect(url_for("admin_configuracoes"))
-
-
-
 #def ver_dados_historico():
 
 
@@ -193,6 +181,21 @@ def admin_configuracoes():
 		return render_template("admin_configuracoes.html", addlock_status=str(add_lock[0]))
 	else:
 		return render_template("nouser.html")
+
+@app.route("/change_addlock")
+def change_addlock():
+	if "user" in session:
+		add_lock = ver_addlock()
+		if add_lock[0] == False:
+			sql.cursor.execute("UPDATE settings SET addlock=?", (True))
+			sql.cnxn.commit()
+		else:
+			sql.cursor.execute("UPDATE settings SET addlock=?", (False))
+			sql.cnxn.commit()
+		return redirect(url_for("admin_configuracoes"))
+	else:
+		return render_template("nouser.html")
+
 
 @app.route("/admin/usermgmt")
 def admin_usermgmt():

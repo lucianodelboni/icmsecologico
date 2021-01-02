@@ -21,12 +21,12 @@ def ger_num_processo():
 	num_extract = sql.cursor.execute("SELECT cont_num_processo FROM settings").fetchone()
 	num = '{:06.0f}'.format(int(num_extract[0]))
 	proximo_num = int(num_extract[0])+1
-	este_ano = session.get('ano', None)
+	este_ano = 2020
 
 	if int(num)<10:
 		num_processo = "SE" + str(num) + "/" + str(este_ano)
 		sql.cursor.execute("UPDATE settings SET cont_num_processo=?", (proximo_num))
-		sql.cnxn.commit()
+		mysql.connection.commit()
 
 	return num_processo
 
@@ -56,7 +56,6 @@ def home():
 
 		username = str(request.form["un"])
 		password = str(request.form["pass"])
-		session["user"] = username
 
 		municipio = sql.cursor.execute("SELECT MUN FROM UserAuth WHERE username=?", (username)).fetchone()
 		UsernameData = sql.cursor.execute("SELECT username FROM UserAuth WHERE username=?", (username)).fetchone()
@@ -66,15 +65,25 @@ def home():
 		#Caso o usuario nao esteja na base de dados, redireciona para uma pagina de login falhou
 		if UsernameData == None or PasswordData == None:
 			return render_template("loginfail.html")
+
 		#Caso contrário, realiza o login na página certa
 		else:
-			if municipio != None:
+			if username == UsernameData[0] and password == PasswordData[0] and TypeofUser[0] == "ext":
+				session["user"] = username
 				session["munic"] = str(municipio[0])
-				if username == UsernameData[0] and password == PasswordData[0] and TypeofUser[0] == "ext" :
+				session["typeofuser"] = TypeofUser[0]
 				return redirect(url_for("userext"))
-			if username == UsernameData[0] and password == PasswordData[0] and TypeofUser[0] == "tech" :
+			elif username == UsernameData[0] and password == PasswordData[0] and TypeofUser[0] == "tech":
+				session["user"] = username
+				session["munic"] = str(municipio[0])
+				session["typeofuser"] = TypeofUser[0]
 				return redirect(url_for("usertech"))
-				else:
+			elif username == UsernameData[0] and password == PasswordData[0] and TypeofUser[0] == "admin":
+				session["user"] = username
+				session["munic"] = str(municipio[0])
+				session["typeofuser"] = TypeofUser[0]
+				return redirect(url_for("admin"))
+			else:
 				return render_template("loginfail.html")
 	return render_template("login.html")
 
@@ -90,9 +99,8 @@ def userext():
 @app.route("/userext/envios")
 def userext_envios():
 	if "user" in session:
-		time_check = ctime(time_response.tx_time).split(" ")
-		session['ano'] = str(time_check[-1])
-		este_ano = session.get('ano', None)
+		este_ano = 2020
+		session["ano"] = este_ano
 		munic = session.get('munic', None)
 		data = ver_dados_envios()
 		add_lock = ver_addlock() # trava para controlar a partir de quando um novo requerimento de ICMS pode ser feito
@@ -108,9 +116,9 @@ def userext_envios_novo():
 		munic = session.get('munic', None)
 		ano_base = int(este_ano)-1
 		num_processo = ger_num_processo()
-		sql.cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck) VALUES (?, ?, ?, 'True')", (munic), (ano_base), (este_ano))
+		sql.cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck) VALUES (?, ?, ?, 'Verdadeiro')", (munic), (ano_base), (este_ano))
 		sql.cursor.execute("INSERT INTO envio_preview(mun, anoanalise, numprocesso, reqtipo, situacao, indice) VALUES (?, ?, ?,'UC + RS', 'Novo', '0')",(munic), (este_ano), (num_processo))
-		sql.cnxn.commit()
+		mysql.connection.commit()
 		return render_template("userext_envios_novo.html")
 	else:
 		return render_template("nouser.html")
@@ -182,12 +190,12 @@ def admin_configuracoes():
 def change_addlock():
 	if "user" in session:
 		add_lock = ver_addlock()
-		if add_lock[0] == False:
-			sql.cursor.execute("UPDATE settings SET addlock=?", (True))
-			sql.cnxn.commit()
+		if add_lock[0] == "Falso":
+			sql.cursor.execute("UPDATE settings SET addlock=?", ("Verdadeiro"))
+			mysql.connection.commit()
 		else:
-			sql.cursor.execute("UPDATE settings SET addlock=?", (False))
-			sql.cnxn.commit()
+			sql.cursor.execute("UPDATE settings SET addlock=?", ("Falso"))
+			mysql.connection.commit()
 		return redirect(url_for("admin_configuracoes"))
 	else:
 		return render_template("nouser.html")

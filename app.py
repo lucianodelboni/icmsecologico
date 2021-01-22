@@ -1,45 +1,50 @@
 #-*- coding: UTF-8 -*-
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, render_template, redirect, url_for, request, session
 from flask_mysqldb import MySQL
-import yaml
 
 #configuração inicial do flask, secret key do session e MySQL
 app = Flask(__name__)
-app.secret_key = "master123"
-db = yaml.load(open('db.yaml'))
-app.config['MYSQL_HOST'] = db['mysql_host']
-app.config['MYSQL_USER'] = db['mysql_user']
-app.config['MYSQL_PASSWORD'] = db['mysql_password']
-app.config['MYSQL_DB'] = db['mysql_db']
+mysql = MySQL()
+app.secret_key = "default"
 
-mysql = MySQL(app)
-sql.cursor = mysql.connection.cursor()
+app.config['MYSQL_HOST'] = 'lucknfx5.mysql.pythonanywhere-services.com'
+app.config['MYSQL_USER'] = 'lucknfx5'
+app.config['MYSQL_PASSWORD'] = 'defaultpassword123'
+app.config['MYSQL_DB'] = 'lucknfx5$UserAuth'
+mysql.init_app(app)
+
+with app.app_context():
+    conn = mysql.connect
+    sql_cursor = conn.cursor()
+
 
 
 # função para gerar um número de processo sequencial
 def ger_num_processo():
-	num_extract = sql.cursor.execute("SELECT cont_num_processo FROM settings").fetchone()
-	num = '{:06.0f}'.format(int(num_extract[0]))
-	proximo_num = int(num_extract[0])+1
-	este_ano = 2020
+    sql_cursor.execute("SELECT cont_num_processo FROM settings")
+    num_extract = sql_cursor.fetchone()
+    num = '{:06.0f}'.format(int(num_extract[0]))
+    proximo_num = int(num_extract[0])+1
+    este_ano = 2020
 
-	if int(num)<10:
-		num_processo = "SE" + str(num) + "/" + str(este_ano)
-		sql.cursor.execute("UPDATE settings SET cont_num_processo=?", (proximo_num))
-		mysql.connection.commit()
+    if int(num)<10:
+        num_processo = "SE" + str(num) + "/" + str(este_ano)
+        sql_cursor.execute("UPDATE settings SET cont_num_processo=%s", (proximo_num,))
+        conn.commit()
 
-	return num_processo
+    return num_processo
 
 def ver_dados_envios():
 	munic = session.get('munic', None)
-	sql.cursor.execute("SELECT anoanalise, numprocesso, reqtipo, situacao, indice  FROM envio_preview WHERE mun=? ORDER BY anoanalise DESC", (munic))
-	data=[]	
-	for row in sql.cursor:
+	sql_cursor.execute("SELECT anoanalise, numprocesso, reqtipo, situacao, indice  FROM envio_preview WHERE mun=%s ORDER BY anoanalise DESC", (munic,))
+	data=[]
+	for row in sql_cursor:
 		data.append(row)
 	return data
 
 def ver_addlock():
-	add_lock = sql.cursor.execute("SELECT addlock FROM settings").fetchone()
+	sql_cursor.execute("SELECT addlock FROM settings")
+	add_lock = sql_cursor.fetchone()
 	return add_lock
 
 #def ver_dados_historico():
@@ -57,10 +62,14 @@ def home():
 		username = str(request.form["un"])
 		password = str(request.form["pass"])
 
-		municipio = sql.cursor.execute("SELECT MUN FROM UserAuth WHERE username=?", (username)).fetchone()
-		UsernameData = sql.cursor.execute("SELECT username FROM UserAuth WHERE username=?", (username)).fetchone()
-		PasswordData = sql.cursor.execute("SELECT password FROM UserAuth WHERE username=?", (username)).fetchone()
-		TypeofUser	= sql.cursor.execute("SELECT type FROM UserAuth WHERE username=?", (username)).fetchone()
+		sql_cursor.execute("SELECT MUN FROM UserAuth WHERE username=%s", (username,))
+		municipio = sql_cursor.fetchone()
+		sql_cursor.execute("SELECT username FROM UserAuth WHERE username=%s", (username,))
+		UsernameData = sql_cursor.fetchone()
+		sql_cursor.execute("SELECT password FROM UserAuth WHERE username=%s", (username,))
+		PasswordData = sql_cursor.fetchone()
+		sql_cursor.execute("SELECT type FROM UserAuth WHERE username=%s", (username,))
+		TypeofUser	= sql_cursor.fetchone()
 
 		#Caso o usuario nao esteja na base de dados, redireciona para uma pagina de login falhou
 		if UsernameData == None or PasswordData == None:
@@ -104,7 +113,8 @@ def userext_envios():
 		munic = session.get('munic', None)
 		data = ver_dados_envios()
 		add_lock = ver_addlock() # trava para controlar a partir de quando um novo requerimento de ICMS pode ser feito
-		req_check = sql.cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano_analise=? AND mun=?", (este_ano), (munic)).fetchone()
+		sql_cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano_analise=%s AND mun=%s", (este_ano, munic))
+		req_check = sql_cursor.fetchone()
 		return render_template("userext_envios.html", este_ano=este_ano, data=data, add_lock=add_lock[0], req_check=req_check)
 	else:
 		return render_template("nouser.html")
@@ -116,9 +126,9 @@ def userext_envios_novo():
 		munic = session.get('munic', None)
 		ano_base = int(este_ano)-1
 		num_processo = ger_num_processo()
-		sql.cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck) VALUES (?, ?, ?, 'Verdadeiro')", (munic), (ano_base), (este_ano))
-		sql.cursor.execute("INSERT INTO envio_preview(mun, anoanalise, numprocesso, reqtipo, situacao, indice) VALUES (?, ?, ?,'UC + RS', 'Novo', '0')",(munic), (este_ano), (num_processo))
-		mysql.connection.commit()
+		sql_cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck) VALUES (%s, %s, %s, 'Verdadeiro')", (munic,), (ano_base,), (este_ano,))
+		sql_cursor.execute("INSERT INTO envio_preview(mun, anoanalise, numprocesso, reqtipo, situacao, indice) VALUES (%s, %s, %s,'UC + RS', 'Novo', '0')",(munic,), (este_ano,), (num_processo,))
+		conn.commit()
 		return render_template("userext_envios_novo.html")
 	else:
 		return render_template("nouser.html")
@@ -191,11 +201,11 @@ def change_addlock():
 	if "user" in session:
 		add_lock = ver_addlock()
 		if add_lock[0] == "Falso":
-			sql.cursor.execute("UPDATE settings SET addlock=?", ("Verdadeiro"))
-			mysql.connection.commit()
+			sql_cursor.execute("UPDATE settings SET addlock=%s", ("Verdadeiro",))
+			conn.commit()
 		else:
-			sql.cursor.execute("UPDATE settings SET addlock=?", ("Falso"))
-			mysql.connection.commit()
+			sql_cursor.execute("UPDATE settings SET addlock=%s", ("Falso",))
+			conn.commit()
 		return redirect(url_for("admin_configuracoes"))
 	else:
 		return render_template("nouser.html")
@@ -224,5 +234,5 @@ def ICMS_indice():
 		return render_template("ICMS_indice.html")
 
 
-if __name__ == "__main__":
-	app.run(debug=True)
+#if __name__ == "__main__":
+#	app.run(debug=True)

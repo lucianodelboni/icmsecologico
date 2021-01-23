@@ -10,20 +10,23 @@
 	<p> Por gentileza, selecione uma das opções abaixo ou utilize a barra de navegação na parte superior da página. </p>
 </div>	
 
-  <div class="row container-fluid mg">
-    <div class="col-lg-2 d-flex justify-content-center">
-        <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_historico')}}" >Histórico</a>
-    </div>
-    <div class="col-lg-2 d-flex justify-content-center">
-      <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_estatisticas')}}" >Estatística</a>
-    </div>
-    <div class="col-lg-2 d-flex justify-content-center">
-      <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_configuracoes')}}" >Configurações</a>
-    </div>
-    <div class="col-lg-2 d-flex justify-content-center">
-      <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_usermgmt')}}" >Usuários</a>
-    </div>
+<div class="row container-fluid mg">
+  <div class="col-lg-2 d-flex justify-content-center">
+      <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_historico')}}" >Histórico</a>
   </div>
+  <div class="col-lg-2 d-flex justify-content-center">
+    <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_estatisticas')}}" >Estatística</a>
+  </div>
+  <div class="col-lg-2 d-flex justify-content-center">
+    <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_configuracoes')}}" >Configurações</a>
+  </div>
+  <div class="col-lg-2 d-flex justify-content-center">
+    <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_usermgmt')}}" >Usuários</a>
+  </div>
+  <div class="col-lg-2 d-flex justify-content-center">
+    <a role="button" class="btn btn-success btn-lg" href="{{url_for('admin_atribuir')}}" >Atribuir</a>
+  </div>
+</div>
 
 
 {% endblock %}

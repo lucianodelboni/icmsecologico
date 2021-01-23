@@ -32,6 +32,13 @@ def ver_dados_envios():
 		data.append(row)
 	return data
 
+def ver_dados_usuarios():
+	sql.cursor.execute("SELECT * FROM UserAuth")
+	data=[]
+	for row in sql.cursor:
+		data.append(row)
+	return data
+
 def ver_addlock():
 	add_lock = sql.cursor.execute("SELECT addlock FROM settings").fetchone()
 	return add_lock
@@ -58,10 +65,10 @@ def home():
 		
 		#Procura se existe um usuario externo/interno com as credenciais de login e senha e redireciona para sua pagina
 		else:
-			municipio = sql.cursor.execute("SELECT MUN FROM auth_userext WHERE username=?", (username)).fetchone()
-			UsernameData = sql.cursor.execute("SELECT username FROM auth_userext WHERE username=?", (username)).fetchone()
-			PasswordData = sql.cursor.execute("SELECT password FROM auth_userext WHERE username=?", (username)).fetchone()
-			TypeofUser	= sql.cursor.execute("SELECT tipo FROM auth_userext WHERE username=?", (username)).fetchone()
+			municipio = sql.cursor.execute("SELECT MUN FROM UserAuth WHERE username=?", (username)).fetchone()
+			UsernameData = sql.cursor.execute("SELECT username FROM UserAuth WHERE username=?", (username)).fetchone()
+			PasswordData = sql.cursor.execute("SELECT password FROM UserAuth WHERE username=?", (username)).fetchone()
+			TypeofUser	= sql.cursor.execute("SELECT tipo FROM UserAuth WHERE username=?", (username)).fetchone()
 
 			#Caso o usuario nao esteja na base de dados, redireciona para uma pagina de login falhou
 			if UsernameData == None or PasswordData == None:
@@ -200,7 +207,15 @@ def change_addlock():
 @app.route("/admin/usermgmt")
 def admin_usermgmt():
 	if "user" in session:
-		return render_template("admin_usermgmt.html")
+		data = ver_dados_usuarios()
+		return render_template("admin_usermgmt.html", data=data)
+	else:
+		return render_template("nouser.html")
+
+@app.route("/admin/atribuir")
+def admin_atribuir():
+	if "user" in session:
+		return render_template("admin_atribuir.html")
 	else:
 		return render_template("nouser.html")
 

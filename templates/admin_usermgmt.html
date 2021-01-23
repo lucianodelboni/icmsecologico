@@ -4,6 +4,49 @@
 {% block content %}
 {% endblock %}
 {% block body%}
+
+<p style="padding:20px; font-weight:bold;">Lista de usuários cadastrados no Siseco:</p>
+
+<div class="container-fluid justify-content-center">
+	<a>
+		<button>Novo</button>
+	</a>
+
+	<a>
+		<button>Editar</button>
+	</a>
+
+	<a>
+		<button>Deletar</button>
+	</a>
+
+	<a>
+		<button>Randomizar senhas (ext)</button>
+	</a>
+</div>
+
+
+<div class="container-fluid justify-content-center" id="usuarios" style="padding:10px;">
+	<table class="tbl">
+		
+		<tr class="tbl_h">
+			<th>id</th>
+			<th>Município</th>
+			<th>Usuário</th>
+			<th>Senha</th>
+			<th>Tipo de acesso</th>
+		</tr>
+		{% for row in data %}
+		<tr class="tbl_r">
+			{% for cell in row %}
+			<td class="tbl_c">{{cell}}</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+
+
 {% endblock %}
 
 

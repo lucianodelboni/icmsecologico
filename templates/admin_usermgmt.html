@@ -7,6 +7,14 @@
 
 <p style="padding:20px; font-weight:bold;">Lista de usuários cadastrados no Siseco:</p>
 
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for message in messages %}
+			<p class="msg__error">{{ message }}</p>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+
 <div class="container-fluid justify-content-center">
 
 	<!--Cadastrar novo usuário-->
@@ -82,7 +90,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-						<button name="action" type="submit" class="btn btn-primary" value="del">Salvar</button>
+						<button name="action" type="submit" class="btn btn-primary" value="del">Excluir</button>
 					</div>
 				</form>
 			</div>

@@ -233,15 +233,23 @@ def admin_usermgmt():
 					new_id = int(get_last_id[0]) + 1
 					sql.cursor.execute("INSERT INTO UserAuth(id, MUN, username, password, tipo) VALUES(?, ?, ?, ?, ?)", (new_id), (new_username), (new_user), (new_pwd), (new_usr_type))
 					sql.cnxn.commit()
+					flash(u'O usuário foi adicionado com sucesso!')
 
 				else:
-					pass
+					flash(u'Erro: Não foi possível adicionar o novo usuário, pois ele já existe!')					
 
 			elif str(request.form['action']) == "edit":
 				pass
 
 			elif str(request.form['action']) == "del":
-				pass
+				try:
+					user_id = int(request.form['user_id'])
+					sql.cursor.execute("DELETE FROM UserAuth WHERE id=?", (user_id))
+					flash(u'Usuário excluído com sucesso!')
+				except Exception:
+					flash(u'Erro: valor inserido deve ser numérico referente à coluna ID da lista abaixo!')
+
+
 
 			elif str(request.form['action']) == "randomize_ext":
 				pass

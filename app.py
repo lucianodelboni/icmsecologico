@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, url_for, request, session, f
 from packages import sql_connection as sql
 from time import ctime
 import ntplib
+import random
 
 #configuração inicial do flask, secret key do session e ntplib
 app = Flask(__name__)
@@ -204,9 +205,24 @@ def change_addlock():
 		return render_template("nouser.html")
 
 
-@app.route("/admin/usermgmt")
+@app.route("/admin/usermgmt", methods=["POST", "GET"])
 def admin_usermgmt():
 	if "user" in session:
+		if request.method == "POST":
+			#pega as variáveis do formulário
+			new_username = str(request.form["new_username"])
+			new_user = str(request.form["new_user"])
+			new_pwd = str(request.form["new_pwd"])
+			new_usr_type = str(request.form["new_usr_type"])
+
+			#insere as credenciais na base de dados
+			get_last_id = sql.cursor.execute("SELECT TOP 1 id FROM UserAuth ORDER BY id DESC").fetchone()
+			new_id = int(get_last_id[0]) + 1
+			sql.cursor.execute("INSERT INTO UserAuth(id, MUN, username, password, tipo) VALUES(?, ?, ?, ?, ?)", (new_id), (new_username), (new_user), (new_pwd), (new_usr_type))
+			sql.cnxn.commit()
+			return redirect(url_for("admin_usermgmt"))
+
+
 		data = ver_dados_usuarios()
 		return render_template("admin_usermgmt.html", data=data)
 	else:

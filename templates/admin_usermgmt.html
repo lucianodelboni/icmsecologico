@@ -9,15 +9,15 @@
 
 <div class="container-fluid justify-content-center">
 
-	<button data-toggle="modal" data-target="#modal_add_usr">Novo</button>
-
+	<!--Cadastrar novo usuário-->
+	<button data-toggle="modal" class="btn btn-info" data-target="#modal_add_usr">Novo</button>
 
 	<div class="modal fade" id="modal_add_usr" tabindex="-1" role="dialog" aria-labelledby="#modal2" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<form method="POST">
 					<div class="modal-header">
-						<h5 class="modal-title" id="modal2">Fornecer informações do novo usuário.</h5>
+						<h5 class="modal-title" id="modal2">Cadastro de Novo Usuário</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -47,24 +47,51 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-						<button type="submit" class="btn btn-primary" value="Submit">Salvar</button>
+						<button name="action" type="submit" class="btn btn-primary" value="add">Salvar</button>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 
-	<a>
-		<button>Editar</button>
-	</a>
 
-	<a>
-		<button>Deletar</button>
-	</a>
+	<!--Editar informações do usuário existente-->
+	<button class="btn btn-info">Editar</button>
 
-	<a>
-		<button>Randomizar senhas (ext)</button>
-	</a>
+
+	<!--deletar usuário existente-->
+	<button data-toggle="modal" class="btn btn-info" data-target="#modal_del_usr">Deletar</button>
+
+	<div class="modal fade" id="modal_del_usr" tabindex="-1" role="dialog" aria-labelledby="#modal2" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<form method="POST">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modal2">Exclusão de Usuário Existente</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+					</div>
+					<div class="modal-body">
+
+							<div class="form-group">
+								<label>Digite o ID do usuário que deseja excluir:</label>
+					        	<input name="user_id" class="form-control" type="text">
+							</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						<button name="action" type="submit" class="btn btn-primary" value="del">Salvar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!--randomizar senhas dos usuários externos-->
+	<button class="btn btn-info">Randomizar senhas (ext)</button>
+
 </div>
 
 
@@ -72,7 +99,7 @@
 	<table class="tbl">
 		
 		<tr class="tbl_h">
-			<th>id</th>
+			<th>ID</th>
 			<th>Município/Nome</th>
 			<th>Usuário</th>
 			<th>Senha</th>

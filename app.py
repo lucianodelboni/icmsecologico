@@ -34,7 +34,7 @@ def ver_dados_envios():
 	return data
 
 def ver_dados_usuarios():
-	sql.cursor.execute("SELECT * FROM UserAuth")
+	sql.cursor.execute("SELECT * FROM UserAuth ORDER BY tipo ASC")
 	data=[]
 	for row in sql.cursor:
 		data.append(row)
@@ -43,6 +43,14 @@ def ver_dados_usuarios():
 def ver_addlock():
 	add_lock = sql.cursor.execute("SELECT addlock FROM settings").fetchone()
 	return add_lock
+
+def ver_user_exist(name, login):
+	check_name = sql.cursor.execute("SELECT MUN FROM UserAuth WHERE MUN=?", (name)).fetchone()
+	check_login = sql.cursor.execute("SELECT username FROM UserAuth WHERE username=?", (login)).fetchone()
+	if check_name == None and check_login == None:
+		return False
+	else:
+		return True
 
 #def ver_dados_historico():
 
@@ -209,20 +217,37 @@ def change_addlock():
 def admin_usermgmt():
 	if "user" in session:
 		if request.method == "POST":
-			#pega as variáveis do formulário
-			new_username = str(request.form["new_username"])
-			new_user = str(request.form["new_user"])
-			new_pwd = str(request.form["new_pwd"])
-			new_usr_type = str(request.form["new_usr_type"])
+			if str(request.form['action']) == "add":
+				#pega as variáveis do formulário
+				new_username = str(request.form["new_username"])
+				new_user = str(request.form["new_user"])
+				new_pwd = str(request.form["new_pwd"])
+				new_usr_type = str(request.form["new_usr_type"])
 
-			#insere as credenciais na base de dados
-			get_last_id = sql.cursor.execute("SELECT TOP 1 id FROM UserAuth ORDER BY id DESC").fetchone()
-			new_id = int(get_last_id[0]) + 1
-			sql.cursor.execute("INSERT INTO UserAuth(id, MUN, username, password, tipo) VALUES(?, ?, ?, ?, ?)", (new_id), (new_username), (new_user), (new_pwd), (new_usr_type))
-			sql.cnxn.commit()
-			return redirect(url_for("admin_usermgmt"))
+				#verifica se o usuário já existe com base no nome e no login
+				user_exist = ver_user_exist(new_username, new_user)
+
+				if user_exist == False:
+					#insere as novas credenciais na base de dados
+					get_last_id = sql.cursor.execute("SELECT TOP 1 id FROM UserAuth ORDER BY id DESC").fetchone()
+					new_id = int(get_last_id[0]) + 1
+					sql.cursor.execute("INSERT INTO UserAuth(id, MUN, username, password, tipo) VALUES(?, ?, ?, ?, ?)", (new_id), (new_username), (new_user), (new_pwd), (new_usr_type))
+					sql.cnxn.commit()
+
+				else:
+					pass
+
+			elif str(request.form['action']) == "edit":
+				pass
+
+			elif str(request.form['action']) == "del":
+				pass
+
+			elif str(request.form['action']) == "randomize_ext":
+				pass
 
 
+		#chama a função para mostrar todos os usuários do sistema
 		data = ver_dados_usuarios()
 		return render_template("admin_usermgmt.html", data=data)
 	else:

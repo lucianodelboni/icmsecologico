@@ -52,6 +52,18 @@ def ver_user_exist(name, login):
 	else:
 		return True
 
+def ver_id_exist(ID):
+	check_id = sql.cursor.execute("SELECT id FROM UserAuth WHERE id=?", (ID))
+	if check_id == None:
+		return False
+	else:
+		return True
+
+def ver_last_id():
+	get_last_id = sql.cursor.execute("SELECT TOP 1 id FROM UserAuth ORDER BY id DESC").fetchone()
+	return int(get_last_id[0])
+
+
 #def ver_dados_historico():
 
 
@@ -217,44 +229,67 @@ def change_addlock():
 def admin_usermgmt():
 	if "user" in session:
 		if request.method == "POST":
+			#adiciona novo usuário
 			if str(request.form['action']) == "add":
 				#pega as variáveis do formulário
-				new_username = str(request.form["new_username"])
 				new_user = str(request.form["new_user"])
+				new_username = str(request.form["new_username"])
 				new_pwd = str(request.form["new_pwd"])
 				new_usr_type = str(request.form["new_usr_type"])
 
 				#verifica se o usuário já existe com base no nome e no login
-				user_exist = ver_user_exist(new_username, new_user)
+				user_exist = ver_user_exist(new_user, new_username)
 
 				if user_exist == False:
 					#insere as novas credenciais na base de dados
-					get_last_id = sql.cursor.execute("SELECT TOP 1 id FROM UserAuth ORDER BY id DESC").fetchone()
-					new_id = int(get_last_id[0]) + 1
-					sql.cursor.execute("INSERT INTO UserAuth(id, MUN, username, password, tipo) VALUES(?, ?, ?, ?, ?)", (new_id), (new_username), (new_user), (new_pwd), (new_usr_type))
+					new_id = ver_last_id() + 1
+					sql.cursor.execute("INSERT INTO UserAuth(id, MUN, username, password, tipo) VALUES(?, ?, ?, ?, ?)", (new_id), (new_user), (new_username), (new_pwd), (new_usr_type))
 					sql.cnxn.commit()
 					flash(u'O usuário foi adicionado com sucesso!')
 
 				else:
 					flash(u'Erro: Não foi possível adicionar o novo usuário, pois ele já existe!')					
 
+			#edita um usuário existente
 			elif str(request.form['action']) == "edit":
 				try:
 					user_id = int(request.form['user_id'])
-			
+					edit_user = str(request.form["edit_user"])
+					edit_username = str(request.form["edit_username"])
+					edit_pwd = str(request.form["edit_pwd"])
+					edit_usr_type = str(request.form["edit_usr_type"])
+
+					id_exist = ver_id_exist(user_id)
+
+					#código para atualizar apenas os campos que foram preenchidos no formulário
+					if id_exist == True:
+						if edit_user != "":
+							sql.cursor.execute("UPDATE UserAuth SET MUN=? WHERE id=?", (edit_user), (user_id))
+						if edit_username != "":
+							sql.cursor.execute("UPDATE UserAuth SET username=? WHERE id=?", (edit_username), (user_id))
+						if edit_pwd != "":
+							sql.cursor.execute("UPDATE UserAuth SET password=? WHERE id=?", (edit_pwd), (user_id))
+						if edit_usr_type != "":
+							sql.cursor.execute("UPDATE UserAuth SET tipo=? WHERE id=?", (edit_usr_type), (user_id))
+						sql.cnxn.commit()
+						flash(f'Os campos do usuário de Id {user_id} foram alterados com sucesso!')
+					else:
+						flash(f'Não existe usuário cujo id seja {user_id}.')
 				except Exception:
-					flash(u'Erro: valor inserido é nulo ou não é um número referente à coluna ID da lista abaixo!')
-
-
-
+					flash('Erro: valor inserido é nulo ou não é um número referente à coluna ID da lista abaixo!')
 
 			elif str(request.form['action']) == "del":
 				try:
 					user_id = int(request.form['user_id'])
-					sql.cursor.execute("DELETE FROM UserAuth WHERE id=?", (user_id))
-					flash(u'Usuário excluído com sucesso!')
+					last_id = ver_last_id()
+					if user_id <= 0 or user_id > last_id:
+						raise Exception
+					else:
+						sql.cursor.execute("DELETE FROM UserAuth WHERE id=?", (user_id))
+						sql.cnxn.commit()
+						flash(u'Usuário excluído com sucesso!')
 				except Exception:
-					flash(u'Erro: valor inserido é nulo ou não é um número referente à coluna ID da lista abaixo!')
+					flash('Erro: valor inserido é nulo ou não é um número referente à coluna ID da lista abaixo!')
 
 
 

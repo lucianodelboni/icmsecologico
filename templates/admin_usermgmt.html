@@ -34,11 +34,11 @@
 
 							<div class="form-group">
 								<label>Nome do Municípios/Técnico:</label>
-					        	<input name="new_username" class="form-control" type="text">
+					        	<input name="new_user" class="form-control" type="text">
 							</div>
 							<div class="form-group">
 								<label>Nome para login:</label>
-					        	<input name="new_user" class="form-control" type="text">
+					        	<input name="new_username" class="form-control" type="text">
 							</div>
 							<div class="form-group">
 								<label>Senha:</label>
@@ -46,15 +46,17 @@
 							</div>
 							<div class="form-group">
 								<label>Tipo de usuário:</label>
+								<p style="font-size: 11px; color:gray;">Caso nenhuma alternativa seja selecionada, o usuário será criado como "Externo"</p>
 								<select name="new_usr_type" class="form-control">
-									<option value="ext">Externo</a>
-									<option value="tech">Técnico</a>
+									<option value="ext">-</option>
+									<option value="ext">Externo</option>
+									<option value="tech">Técnico</option>
 								</select>
 							</div>
 
 					</div>
 					<div class="modal-footer">
-						<button name="action" type="submit" class="btn btn-primary" value="add">Salvar</button>
+						<button name="action" type="submit" class="btn btn-primary" value="add">Adicionar</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 					</div>
 				</form>
@@ -84,11 +86,11 @@
 							</div>
 							<div class="form-group">
 								<label>Novo nome do Municípios/Técnico:</label>
-					        	<input name="edit_username" class="form-control" type="text">
+					        	<input name="edit_user" class="form-control" type="text">
 							</div>
 							<div class="form-group">
 								<label>Novo nome para login:</label>
-					        	<input name="edit_user" class="form-control" type="text">
+					        	<input name="edit_username" class="form-control" type="text">
 							</div>
 							<div class="form-group">
 								<label>Nova senha:</label>
@@ -97,14 +99,15 @@
 							<div class="form-group">
 								<label>Novo tipo de usuário:</label>
 								<select name="edit_usr_type" class="form-control">
-									<option value="ext">Externo</a>
-									<option value="tech">Técnico</a>
+									<option value="">-</option>
+									<option value="ext">Externo</option>
+									<option value="tech">Técnico</option>
 								</select>
 							</div>
 
 					</div>
 					<div class="modal-footer">
-						<button class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_usr2">Editar</button>
+						<button name="action" type="submit" class="btn btn-primary" value="edit">Editar</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 					</div>
 				</form>

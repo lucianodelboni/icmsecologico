@@ -239,7 +239,14 @@ def admin_usermgmt():
 					flash(u'Erro: Não foi possível adicionar o novo usuário, pois ele já existe!')					
 
 			elif str(request.form['action']) == "edit":
-				pass
+				try:
+					user_id = int(request.form['user_id'])
+			
+				except Exception:
+					flash(u'Erro: valor inserido é nulo ou não é um número referente à coluna ID da lista abaixo!')
+
+
+
 
 			elif str(request.form['action']) == "del":
 				try:
@@ -247,7 +254,7 @@ def admin_usermgmt():
 					sql.cursor.execute("DELETE FROM UserAuth WHERE id=?", (user_id))
 					flash(u'Usuário excluído com sucesso!')
 				except Exception:
-					flash(u'Erro: valor inserido deve ser numérico referente à coluna ID da lista abaixo!')
+					flash(u'Erro: valor inserido é nulo ou não é um número referente à coluna ID da lista abaixo!')
 
 
 

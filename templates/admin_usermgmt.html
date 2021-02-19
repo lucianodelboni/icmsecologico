@@ -54,8 +54,8 @@
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 						<button name="action" type="submit" class="btn btn-primary" value="add">Salvar</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 					</div>
 				</form>
 			</div>
@@ -64,7 +64,53 @@
 
 
 	<!--Editar informações do usuário existente-->
-	<button class="btn btn-info">Editar</button>
+	<button data-toggle="modal" class="btn btn-info" data-target="#modal_edit_usr">Editar</button>
+
+	<div class="modal fade" id="modal_edit_usr" tabindex="-1" role="dialog" aria-labelledby="#modal2" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<form method="POST">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modal2">Editar Informações de Usuário Existente</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+					</div>
+					<div class="modal-body">
+
+							<div class="form-group">
+								<label>Digite o ID do usuário cujas informações deseja editar:</label>
+					        	<input name="user_id" class="form-control" type="text">
+							</div>
+							<div class="form-group">
+								<label>Novo nome do Municípios/Técnico:</label>
+					        	<input name="edit_username" class="form-control" type="text">
+							</div>
+							<div class="form-group">
+								<label>Novo nome para login:</label>
+					        	<input name="edit_user" class="form-control" type="text">
+							</div>
+							<div class="form-group">
+								<label>Nova senha:</label>
+					        	<input name="edit_pwd" class="form-control" type="text">
+							</div>
+							<div class="form-group">
+								<label>Novo tipo de usuário:</label>
+								<select name="edit_usr_type" class="form-control">
+									<option value="ext">Externo</a>
+									<option value="tech">Técnico</a>
+								</select>
+							</div>
+
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_usr2">Editar</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 
 	<!--deletar usuário existente-->
@@ -89,8 +135,8 @@
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 						<button name="action" type="submit" class="btn btn-primary" value="del">Excluir</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 					</div>
 				</form>
 			</div>

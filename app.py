@@ -1,9 +1,9 @@
 #-*- coding: UTF-8 -*-
 from flask import Flask, render_template, redirect, url_for, request, session, flash
-from packages import sql_connection as sql
+from packages import sql_connection as sql, random_pwd_gen as rpg
 from time import ctime
 import ntplib
-import random
+
 
 #configuração inicial do flask, secret key do session e ntplib
 app = Flask(__name__)
@@ -24,6 +24,16 @@ def ger_num_processo():
 		sql.cnxn.commit()
 
 	return num_processo
+
+def ger_pwd_random(size):
+	qtd_userext = len(sql.cursor.execute("SELECT * FROM UserAuth WHERE tipo='ext'").fetchall())
+	ids = sql.cursor.execute("SELECT id FROM UserAuth WHERE tipo='ext'").fetchall()
+	conv_tup_list =[x[0] for x in ids] # converting the list of tuples into a list
+	for x in conv_tup_list:
+		randompass = rpg.pwd_gen(size)
+		sql.cursor.execute("UPDATE UserAuth SET password=? WHERE id=?", (randompass), (x))
+		sql.cnxn.commit()
+
 
 def ver_dados_envios():
 	munic = session.get('munic', None)
@@ -273,8 +283,10 @@ def admin_usermgmt():
 							sql.cursor.execute("UPDATE UserAuth SET tipo=? WHERE id=?", (edit_usr_type), (user_id))
 						sql.cnxn.commit()
 						flash(f'Os campos do usuário de Id {user_id} foram alterados com sucesso!')
+						
 					else:
 						flash(f'Não existe usuário cujo id seja {user_id}.')
+
 				except Exception:
 					flash('Erro: valor inserido é nulo ou não é um número referente à coluna ID da lista abaixo!')
 
@@ -282,20 +294,30 @@ def admin_usermgmt():
 				try:
 					user_id = int(request.form['user_id'])
 					last_id = ver_last_id()
+
 					if user_id <= 0 or user_id > last_id:
 						raise Exception
+
 					else:
 						sql.cursor.execute("DELETE FROM UserAuth WHERE id=?", (user_id))
 						sql.cnxn.commit()
 						flash(u'Usuário excluído com sucesso!')
+
 				except Exception:
 					flash('Erro: valor inserido é nulo ou não é um número referente à coluna ID da lista abaixo!')
 
-
-
 			elif str(request.form['action']) == "randomize_ext":
-				pass
+				try:
+					pwd_size = int(request.form['pwd_size'])
 
+					if pwd_size > 6:
+						ger_pwd_random(pwd_size)
+
+					else:
+						raise Exception
+
+				except Exception:
+					flash('Erro: Por questões de segurança, o número de caracteres da senha deve ser superior a 6')
 
 		#chama a função para mostrar todos os usuários do sistema
 		data = ver_dados_usuarios()

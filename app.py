@@ -82,11 +82,8 @@ def ver_last_id():
 	return int(get_last_id[0])
 
 
-
-
-
-
 #def valida_usuario(): para que o usuário em uma seção não interfira em um de outra
+
 
 
 # criando roteamento para endereço com barras simples ou home e definindo autenticação de login
@@ -227,6 +224,7 @@ def admin_historico_consulta(ano):
 @app.route("/admin/historico/<ano>/<cod_processo>")
 def admin_historico_especifico(ano, cod_processo):
 	if "user" in session:
+		#passar dados deste processo a serem mostrados na tela
 		return render_template("admin_historico_especifico.html", cod_processo=cod_processo)
 
 @app.route("/admin/estatisticas")

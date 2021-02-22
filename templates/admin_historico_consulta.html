@@ -1,0 +1,32 @@
+{% extends "base_admin.html" %}
+{% block addhead %}
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block body%}
+
+<h5>Selecione o processo que deseja consultar: </h5>
+
+<div class="container-fluid justify-content-center mg" id="sintese">
+	<table class="tbl">
+		<tr class="tbl_h">
+			<th>Município</th>
+			<th>Ano de análise</th>
+			<th>N° de processo</th>
+			<th>Requerimento</th>
+			<th>Situação</th>
+			<th>Índice</th>
+			<th>Acesso</th>			
+		</tr>
+		{% for row in data %}
+		<tr class="tbl_r">
+			{% for cell in row %}
+			<td class="tbl_c">{{cell}}</td>
+			{% endfor %}
+			<td class="tbl_c"><a href="{{url_for('admin_historico_especifico', ano=row[1], cod_processo=row[2])}}">Visualizar</a></td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+
+{% endblock %}

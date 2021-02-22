@@ -16,13 +16,11 @@ def ger_num_processo():
 	num_extract = sql.cursor.execute("SELECT cont_num_processo FROM settings").fetchone()
 	num = '{:06.0f}'.format(int(num_extract[0]))
 	proximo_num = int(num_extract[0])+1
-	este_ano = session.get('ano', None)
 
-	if int(num)<10:
-		num_processo = "SE" + str(num) + "/" + str(este_ano)
-		sql.cursor.execute("UPDATE settings SET cont_num_processo=?", (proximo_num))
-		sql.cnxn.commit()
-
+	num_processo = "SE" + str(num)
+	sql.cursor.execute("UPDATE settings SET cont_num_processo=?", (proximo_num))
+	sql.cnxn.commit()
+	
 	return num_processo
 
 def ger_pwd_random(size):
@@ -50,6 +48,16 @@ def ver_dados_usuarios():
 		data.append(row)
 	return data
 
+def ver_historico_anoanalise():
+	return sql.cursor.execute("SELECT DISTINCT anoanalise FROM envio_preview WHERE anoanalise IS NOT NULL")
+
+def ver_historico_processos(ano):
+	return sql.cursor.execute("SELECT * FROM envio_preview WHERE anoanalise=?", (ano))
+
+#def ver_historico_esp(numero_processo):
+	#criar função para ver um processo em específico
+
+
 def ver_addlock():
 	add_lock = sql.cursor.execute("SELECT addlock FROM settings").fetchone()
 	return add_lock
@@ -74,7 +82,8 @@ def ver_last_id():
 	return int(get_last_id[0])
 
 
-#def ver_dados_historico():
+
+
 
 
 #def valida_usuario(): para que o usuário em uma seção não interfira em um de outra
@@ -143,7 +152,7 @@ def userext_envios():
 	else:
 		return render_template("nouser.html")
 
-@app.route("/userext/envios/novo")
+@app.route("/userext/envios/novo") #refatorar este código novamente usando POST em userext_envios para não precisar deste endpoint
 def userext_envios_novo():
 	if "user" in session:
 		este_ano = session.get('ano', None)
@@ -179,6 +188,7 @@ def userext_resumo():
 		return render_template("nouser.html")
 
 
+
 # Seção de endpoints dedicada ao roteamento de páginas do usuário interno (Imasul).
 @app.route("/usertech")
 def usertech():
@@ -198,12 +208,26 @@ def admin():
 	else:
 		return render_template("nouser.html")
 
-@app.route("/admin/historico")
+@app.route("/admin/historico/")
 def admin_historico():
 	if "user" in session:
-		return render_template("admin_historico.html")
+		data = ver_historico_anoanalise()
+		return render_template("admin_historico.html", data=data)
 	else:
 		return render_template("nouser.html")
+
+@app.route("/admin/historico/<ano>")
+def admin_historico_consulta(ano):
+	if "user" in session:
+		data = ver_historico_processos(ano)
+		return render_template("admin_historico_consulta.html", data=data)
+	else:
+		return render_template("nouser.html")
+
+@app.route("/admin/historico/<ano>/<cod_processo>")
+def admin_historico_especifico(ano, cod_processo):
+	if "user" in session:
+		return render_template("admin_historico_especifico.html", cod_processo=cod_processo)
 
 @app.route("/admin/estatisticas")
 def admin_estatisticas():
@@ -218,16 +242,18 @@ def admin_configuracoes():
 		add_lock = ver_addlock()
 		if request.method == "POST":
 			if str(request.form['action']) == "addlock_change":
-
 				if add_lock[0] == False:
 					sql.cursor.execute("UPDATE settings SET addlock=?", (True))
 					sql.cnxn.commit()
-					addlock_status = "Ativada"
 				else:
 					sql.cursor.execute("UPDATE settings SET addlock=?", (False))
 					sql.cnxn.commit()
-					addlock_status = "Desativada"
-		return render_template("admin_configuracoes.html", addlock_status=addlock_status)
+		add_lock = ver_addlock()	
+		if add_lock[0] == True:
+			add_lock = "Ativada"
+		else:
+			add_lock = "Desativada"
+		return render_template("admin_configuracoes.html", addlock_status=add_lock)
 	else:
 		return render_template("nouser.html")
 
@@ -342,6 +368,11 @@ def logout():
 def ICMS_indice():
 	if "user" in session:
 		return render_template("ICMS_indice.html")
+
+@app.route("/test/<dados>")
+def test(dados):
+	if "user" in session:
+		return render_template("test.html", dados=dados)
 
 
 if __name__ == "__main__":

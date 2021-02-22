@@ -7,22 +7,19 @@
 
 <h5>Selecione o ano-base de ICMS Ecológico que deseja consultar: </h5>
 
-<div class="row container-fluid mg" style="background:#ddd;">
-
+<div class="col-7 container-fluid justify-content-center mg">
 	<table class="tbl">
 		<tr class="tbl_h">
-			<th>Ano de análise</th>		
+			<th>Ano de análise</th>
 		</tr>
 		{% for row in data %}
 		<tr class="tbl_r">
 			{% for cell in row %}
-			<td class="tbl_c">{{cell}}</td>
+			<td class="tbl_c"><a href="{{url_for('admin_historico_consulta', ano=cell)}}">{{cell}}</a></td>
 			{% endfor %}
-			<td class="tbl_c"><a href="#">Visualizar</a></td>
 		</tr>
 		{% endfor %}
 	</table>
-
 </div>
 
 

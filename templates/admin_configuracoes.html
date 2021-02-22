@@ -10,11 +10,13 @@
 		<td style="border: solid 1px;">
 			<p>Trava para edição do ICMS Ecológico:&nbsp; &nbsp;</p>
 		</td>
-		<td style="border: solid 1px; padding:0px 10px;">
+		<td style="border: solid 1px; padding:0px 10px; width: 100px;">
 			<p>{{addlock_status}}</p>
 		</td>
 		<td style="padding: 0px 10px;">
-			<a href="{{url_for('change_addlock')}}" class= "btn btn-danger justify-content-center">Alterar</a>
+			<form method="POST">
+				<button name="action" value="addlock_change" type="submit" class= "btn btn-danger justify-content-center">Alterar</button>
+			</form>
 
 			<!--Fazer este botão abrir um modal onde deve-se confirmar a abertura do ICMS Ecológico-->
 		</td>

@@ -212,28 +212,24 @@ def admin_estatisticas():
 	else:
 		return render_template("nouser.html")
 
-@app.route("/admin/configuracoes")
+@app.route("/admin/configuracoes", methods=["POST", "GET"])
 def admin_configuracoes():
 	if "user" in session:
 		add_lock = ver_addlock()
-		return render_template("admin_configuracoes.html", addlock_status=str(add_lock[0]))
+		if request.method == "POST":
+			if str(request.form['action']) == "addlock_change":
+
+				if add_lock[0] == False:
+					sql.cursor.execute("UPDATE settings SET addlock=?", (True))
+					sql.cnxn.commit()
+					addlock_status = "Ativada"
+				else:
+					sql.cursor.execute("UPDATE settings SET addlock=?", (False))
+					sql.cnxn.commit()
+					addlock_status = "Desativada"
+		return render_template("admin_configuracoes.html", addlock_status=addlock_status)
 	else:
 		return render_template("nouser.html")
-
-@app.route("/change_addlock")
-def change_addlock():
-	if "user" in session:
-		add_lock = ver_addlock()
-		if add_lock[0] == False:
-			sql.cursor.execute("UPDATE settings SET addlock=?", (True))
-			sql.cnxn.commit()
-		else:
-			sql.cursor.execute("UPDATE settings SET addlock=?", (False))
-			sql.cnxn.commit()
-		return redirect(url_for("admin_configuracoes"))
-	else:
-		return render_template("nouser.html")
-
 
 @app.route("/admin/usermgmt", methods=["POST", "GET"])
 def admin_usermgmt():
@@ -334,7 +330,7 @@ def admin_atribuir():
 
 
 
-# Seção dedicada ao roteamento de páginas de acesso público.
+# Seção dedicada ao roteamento de endpoints de acesso público.
 @app.route("/logout")
 def logout():
 	session.pop("munic", None)

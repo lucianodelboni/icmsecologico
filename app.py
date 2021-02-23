@@ -7,7 +7,7 @@ import ntplib
 
 #configuração inicial do flask, secret key do session e ntplib
 app = Flask(__name__)
-app.secret_key = "master123"
+app.secret_key = "a standard secret key"
 ntp_client = ntplib.NTPClient()
 time_response = ntp_client.request('br.pool.ntp.org')
 
@@ -36,20 +36,25 @@ def ger_pwd_random(size):
 def ver_dados_envios():
 	munic = session.get('munic', None)
 	sql.cursor.execute("SELECT anoanalise, numprocesso, reqtipo, situacao, indice  FROM envio_preview WHERE mun=? ORDER BY anoanalise DESC", (munic))
-	data=[]	
+	dados_envios=[]	
 	for row in sql.cursor:
-		data.append(row)
-	return data
+		dados_envios.append(row)
+	return dados_envios
 
-def ver_dados_usuarios():
-	sql.cursor.execute("SELECT * FROM UserAuth ORDER BY tipo ASC")
-	data=[]
+def ver_dados_usuarios(tipo):
+	if tipo == "todos":
+		sql.cursor.execute("SELECT * FROM UserAuth ORDER BY tipo ASC")
+	elif tipo == "ext":
+		sql.cursor.execute("SELECT * FROM UserAuth WHERE tipo='ext' ORDER BY id ASC")
+	if tipo == "tech":
+		sql.cursor.execute("SELECT * FROM UserAuth WHERE tipo='tech' ORDER BY id ASC")	
+	dados_usuarios=[]
 	for row in sql.cursor:
-		data.append(row)
-	return data
+		dados_usuarios.append(row)
+	return dados_usuarios
 
 def ver_historico_anoanalise():
-	return sql.cursor.execute("SELECT DISTINCT anoanalise FROM envio_preview WHERE anoanalise IS NOT NULL")
+	return sql.cursor.execute("SELECT DISTINCT anoanalise FROM envio_preview WHERE anoanalise IS NOT NULL ORDER BY anoanalise DESC")
 
 def ver_historico_processos(ano):
 	return sql.cursor.execute("SELECT * FROM envio_preview WHERE anoanalise=?", (ano))
@@ -214,10 +219,10 @@ def admin_historico():
 		return render_template("nouser.html")
 
 @app.route("/admin/historico/<ano>")
-def admin_historico_consulta(ano):
+def admin_historico_processos(ano):
 	if "user" in session:
 		data = ver_historico_processos(ano)
-		return render_template("admin_historico_consulta.html", data=data)
+		return render_template("admin_historico_processos.html", data=data)
 	else:
 		return render_template("nouser.html")
 
@@ -340,7 +345,7 @@ def admin_usermgmt():
 					flash('Erro: Por questões de segurança, o número de caracteres da senha deve ser superior a 6')
 
 		#chama a função para mostrar todos os usuários do sistema
-		data = ver_dados_usuarios()
+		data = ver_dados_usuarios("todos")
 		return render_template("admin_usermgmt.html", data=data)
 	else:
 		return render_template("nouser.html")
@@ -348,7 +353,23 @@ def admin_usermgmt():
 @app.route("/admin/atribuir")
 def admin_atribuir():
 	if "user" in session:
-		return render_template("admin_atribuir.html")
+		data = ver_historico_anoanalise()
+		print(data)
+		return render_template("admin_atribuir.html", data=data)
+	else:
+		return render_template("nouser.html")
+
+@app.route("/admin/atribuir/<ano>", methods=["POST", "GET"])
+def admin_atribuir_processos(ano):
+	if "user" in session:
+		check_tecnicos = ver_dados_usuarios("tech")
+		tecnicos = [x[1] for x in check_tecnicos]
+		data = ver_historico_processos(ano)
+		if request.method == "POST":
+			pass
+
+
+		return render_template("admin_atribuir_processos.html", data=data, tecnicos=tecnicos)
 	else:
 		return render_template("nouser.html")
 

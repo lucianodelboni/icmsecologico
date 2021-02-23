@@ -4,4 +4,22 @@
 {% block content %}
 {% endblock %}
 {% block body%}
+
+<h5 class="pad itens">Selecione o ano-base de ICMS Ecológico: </h5>
+
+<div class="col-7 container-fluid justify-content-center mg">
+	<table class="tbl">
+		<tr class="tbl_h">
+			<th>Ano de análise</th>
+		</tr>
+		{% for row in data %}
+		<tr class="tbl_r">
+			{% for cell in row %}
+			<td class="tbl_c"><a href="{{url_for('admin_atribuir_processos', ano=cell)}}">{{cell}}</a></td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+
 {% endblock %}

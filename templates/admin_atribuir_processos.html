@@ -1,0 +1,35 @@
+{% from "macros.html" import render_modal %}
+{% extends "base_admin.html" %}
+{% block addhead %}
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block body%}
+<h5 class="pad itens">Selecione o processo para o qual deseja atribuir um técnico: </h5>
+
+<div class="container-fluid justify-content-center mg" id="sintese">
+	<table class="tbl">
+		<tr class="tbl_h">
+			<th>Município</th>
+			<th>Ano de análise</th>
+			<th>N° de processo</th>
+			<th>Requerimento</th>
+			<th>Situação</th>
+			<th>Índice</th>
+			<th>Acesso</th>			
+		</tr>
+		{% for row in data %}
+		<tr class="tbl_r">
+			{% for cell in row %}
+			<td class="tbl_c">{{cell}}</td>
+			{% endfor %}
+			<td class="tbl_c">
+				<button class='btn btn-info' data-toggle='modal' data-target='#{{row[2]}}'>Atribuir
+				</button>
+				{{render_modal(row[2], tecnicos)}}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

@@ -5,7 +5,7 @@
 {% endblock %}
 {% block body%}
 
-<h5>Selecione o ano-base de ICMS Ecológico que deseja consultar: </h5>
+<h5 class="pad itens">Selecione o ano-base de ICMS Ecológico para o qual deseja visualizar o histórico: </h5>
 
 <div class="col-7 container-fluid justify-content-center mg">
 	<table class="tbl">
@@ -15,7 +15,7 @@
 		{% for row in data %}
 		<tr class="tbl_r">
 			{% for cell in row %}
-			<td class="tbl_c"><a href="{{url_for('admin_historico_consulta', ano=cell)}}">{{cell}}</a></td>
+			<td class="tbl_c"><a href="{{url_for('admin_historico_processos', ano=cell)}}">{{cell}}</a></td>
 			{% endfor %}
 		</tr>
 		{% endfor %}

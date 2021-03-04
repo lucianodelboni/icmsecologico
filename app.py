@@ -11,6 +11,11 @@ app.secret_key = "a standard secret key"
 ntp_client = ntplib.NTPClient()
 time_response = ntp_client.request('br.pool.ntp.org')
 
+
+def atribuir_status(num_processo, tecnicos_string):
+	sql.cursor.execute("UPDATE envio_preview SET tech_resp=? WHERE numprocesso=?", (tecnicos_string),(num_processo))
+	sql.cnxn.commit()
+
 # função para gerar um número de processo sequencial
 def ger_num_processo():
 	num_extract = sql.cursor.execute("SELECT cont_num_processo FROM settings").fetchone()
@@ -31,7 +36,6 @@ def ger_pwd_random(size):
 		randompass = rpg.pwd_gen(size)
 		sql.cursor.execute("UPDATE UserAuth SET password=? WHERE id=?", (randompass), (x))
 		sql.cnxn.commit()
-
 
 def ver_dados_envios():
 	munic = session.get('munic', None)
@@ -57,7 +61,8 @@ def ver_historico_anoanalise():
 	return sql.cursor.execute("SELECT DISTINCT anoanalise FROM envio_preview WHERE anoanalise IS NOT NULL ORDER BY anoanalise DESC")
 
 def ver_historico_processos(ano):
-	return sql.cursor.execute("SELECT * FROM envio_preview WHERE anoanalise=?", (ano))
+	return sql.cursor.execute("SELECT * FROM envio_preview WHERE anoanalise=?", (ano)).fetchall()
+
 
 #def ver_historico_esp(numero_processo):
 	#criar função para ver um processo em específico
@@ -213,16 +218,16 @@ def admin():
 @app.route("/admin/historico/")
 def admin_historico():
 	if "user" in session:
-		data = ver_historico_anoanalise()
-		return render_template("admin_historico.html", data=data)
+		data_anoanalise = ver_historico_anoanalise()
+		return render_template("admin_historico.html", data=data_anoanalise)
 	else:
 		return render_template("nouser.html")
 
 @app.route("/admin/historico/<ano>")
 def admin_historico_processos(ano):
 	if "user" in session:
-		data = ver_historico_processos(ano)
-		return render_template("admin_historico_processos.html", data=data)
+		data_processos = ver_historico_processos(ano)
+		return render_template("admin_historico_processos.html", data=data_processos)
 	else:
 		return render_template("nouser.html")
 
@@ -345,17 +350,16 @@ def admin_usermgmt():
 					flash('Erro: Por questões de segurança, o número de caracteres da senha deve ser superior a 6')
 
 		#chama a função para mostrar todos os usuários do sistema
-		data = ver_dados_usuarios("todos")
-		return render_template("admin_usermgmt.html", data=data)
+		data_usrs = ver_dados_usuarios("todos")
+		return render_template("admin_usermgmt.html", data=data_usrs)
 	else:
 		return render_template("nouser.html")
 
 @app.route("/admin/atribuir")
 def admin_atribuir():
 	if "user" in session:
-		data = ver_historico_anoanalise()
-		print(data)
-		return render_template("admin_atribuir.html", data=data)
+		data_anoanalise = ver_historico_anoanalise()
+		return render_template("admin_atribuir.html", data=data_anoanalise)
 	else:
 		return render_template("nouser.html")
 
@@ -364,16 +368,50 @@ def admin_atribuir_processos(ano):
 	if "user" in session:
 		check_tecnicos = ver_dados_usuarios("tech")
 		tecnicos = [x[1] for x in check_tecnicos]
-		data = ver_historico_processos(ano)
+		data_processos = ver_historico_processos(ano)
 		if request.method == "POST":
-			pass
+			#inserido os resultados das checkbox em uma variavel e formatando ela para extrair os valores
+			verifier = []
+			for row in data_processos:
+				for tecnico in tecnicos:
+					atrib_string = 'checkbox_'+str(row[2])+'_'+str(tecnico)
+					try:
+						verifier.append(request.form[f'{atrib_string}'])
+					except:
+						continue
+			#formatando a bagunça que sai de output do verifier - manipulação de strings
+			verifier = [s.strip("(") for s in verifier]
+			verifier = [s.strip(")") for s in verifier]
+			verifier = [s.replace("'", "") for s in verifier]
+			newlist=[]
+			for n in verifier:
+				split_entry = n.split(",")
+				newlist.append(split_entry)
+			flattened_newlist = [val for sublist in newlist for val in sublist]
 
+			#obtendo o número do processo e concatenando o nome dos técnicos responsáveis para inserir no banco de dados.
+			try:			
+				num_processo_atribuir = flattened_newlist[0]
+				concat_tecnicos = ''
+				tecnicos_resp = []
 
-		return render_template("admin_atribuir_processos.html", data=data, tecnicos=tecnicos)
+				for y in range(1,len(flattened_newlist),2):
+					tecnicos_resp.append(flattened_newlist[y]) 
+				concat_tecnicos = ", ".join(tecnicos_resp)
+
+				#Atualiza a base de dados para mostrar no front-end quem são os técnicos responsáveis.
+				atribuir_status(num_processo_atribuir, concat_tecnicos)
+
+				#verifica a base de dados para atualizar a tabela mostrada na página.
+				data_processos = ver_historico_processos(ano)
+				flash('O campo foi alterado com sucesso!')
+
+			except Exception:
+				flash('Erro: O campo de técnicos responsáveis não pode ficar em branco depois de alterado pela primeira vez!')
+
+		return render_template("admin_atribuir_processos.html", data=data_processos, tecnicos=tecnicos)
 	else:
 		return render_template("nouser.html")
-
-
 
 # Seção dedicada ao roteamento de endpoints de acesso público.
 @app.route("/logout")

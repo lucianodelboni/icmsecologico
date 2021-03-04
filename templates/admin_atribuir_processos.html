@@ -7,6 +7,14 @@
 {% block body%}
 <h5 class="pad itens">Selecione o processo para o qual deseja atribuir um técnico: </h5>
 
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for message in messages %}
+			<p class="msg__error">{{ message }}</p>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+
 <div class="container-fluid justify-content-center mg" id="sintese">
 	<table class="tbl">
 		<tr class="tbl_h">
@@ -16,6 +24,7 @@
 			<th>Requerimento</th>
 			<th>Situação</th>
 			<th>Índice</th>
+			<th>Técnico Resp.</th>
 			<th>Acesso</th>			
 		</tr>
 		{% for row in data %}
@@ -24,7 +33,7 @@
 			<td class="tbl_c">{{cell}}</td>
 			{% endfor %}
 			<td class="tbl_c">
-				<button class='btn btn-info' data-toggle='modal' data-target='#{{row[2]}}'>Atribuir
+				<button class='btn btn-info' data-toggle='modal' data-target='#{{row[2]}}'>Atualizar
 				</button>
 				{{render_modal(row[2], tecnicos)}}
 			</td>

@@ -5,7 +5,7 @@ server = 'DESKTOP-S9KLVST\SQLEXPRESS'
 database = 'ICMSTest'
 
 # define a string de conexão com o SQL Server
-cnxn = pyodbc.connect('DRIVER={ODBC Driver 11 for SQL Server}; \
+cnxn = pyodbc.connect('DRIVER={SQL Server}; \
 					  SERVER=' + server + '; \
 					  DATABASE=' + database + ';\
 					  Trusted_Connection=yes;')

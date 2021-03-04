@@ -29,7 +29,6 @@ def ger_num_processo():
 	return num_processo
 
 def ger_pwd_random(size):
-	qtd_userext = len(sql.cursor.execute("SELECT * FROM UserAuth WHERE tipo='ext'").fetchall())
 	ids = sql.cursor.execute("SELECT id FROM UserAuth WHERE tipo='ext'").fetchall()
 	conv_tup_list =[x[0] for x in ids] # converting the list of tuples into a list
 	for x in conv_tup_list:

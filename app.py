@@ -5,13 +5,14 @@ from time import ctime
 import ntplib
 
 
-#configuração inicial do flask, secret key do session e ntplib
+#CONFIGURAÇÃO INICIAL DO FLASK, SECRET KEY E NTPLIB
 app = Flask(__name__)
 app.secret_key = "a standard secret key"
 ntp_client = ntplib.NTPClient()
 time_response = ntp_client.request('br.pool.ntp.org')
 
 
+#FUNÇÕES PARA EXECUÇÃO DE AÇÕES ROTINEIRAS OU MUITO ESPECÍFICAS.
 def atribuir_status(num_processo, tecnicos_string):
 	sql.cursor.execute("UPDATE envio_preview SET tech_resp=? WHERE numprocesso=?", (tecnicos_string),(num_processo))
 	sql.cnxn.commit()
@@ -91,8 +92,6 @@ def ver_last_id():
 	return int(get_last_id[0])
 
 
-#def valida_usuario(): para que o usuário em uma seção não interfira em um de outra
-
 
 
 # criando roteamento para endereço com barras simples ou home e definindo autenticação de login
@@ -107,7 +106,9 @@ def home():
 
 		#Por enquanto não precisa constar em base de dados posteriormente pode ser integrado ao Siriema, por enquanto conta com login/pass fixo para admin
 		if username == "imasul" and password == "123":
+			session['usr_type'] = "admin"
 			return redirect(url_for("admin"))
+
 		
 		#Procura se existe um usuario externo/interno com as credenciais de login e senha e redireciona para sua pagina
 		else:
@@ -115,6 +116,9 @@ def home():
 			UsernameData = sql.cursor.execute("SELECT username FROM UserAuth WHERE username=?", (username)).fetchone()
 			PasswordData = sql.cursor.execute("SELECT password FROM UserAuth WHERE username=?", (username)).fetchone()
 			TypeofUser	= sql.cursor.execute("SELECT tipo FROM UserAuth WHERE username=?", (username)).fetchone()
+
+			session["usr_type"] = str(TypeofUser[0])
+			print (session.get('usr_type'))
 
 			#Caso o usuario nao esteja na base de dados, redireciona para uma pagina de login falhou
 			if UsernameData == None or PasswordData == None:
@@ -138,7 +142,7 @@ def home():
 # Seção de endpoints dedicada ao roteamento de páginas do usuário externo (municipio)
 @app.route("/userext")
 def userext():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "ext":
 		munic = session.get('munic', None)
 		return render_template("userext.html", mun_name=munic)
 	else:
@@ -146,7 +150,7 @@ def userext():
 
 @app.route("/userext/envios")
 def userext_envios():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "ext":
 		time_check = ctime(time_response.tx_time).split(" ")
 		session['ano'] = str(time_check[-1])
 		este_ano = session.get('ano', None)
@@ -160,7 +164,7 @@ def userext_envios():
 
 @app.route("/userext/envios/novo") #refatorar este código novamente usando POST em userext_envios para não precisar deste endpoint
 def userext_envios_novo():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "ext":
 		este_ano = session.get('ano', None)
 		munic = session.get('munic', None)
 		ano_base = int(este_ano)-1
@@ -174,21 +178,21 @@ def userext_envios_novo():
 
 @app.route("/userext/pendencias")
 def userext_pendencias():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "ext":
 		return render_template("userext_pendencias.html")
 	else:
 		return render_template("nouser.html")
 
 @app.route("/userext/recurso")
 def userext_recurso():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "ext":
 		return render_template("userext_recurso.html")
 	else:
 		return render_template("nouser.html")
 
 @app.route("/userext/resumo")
 def userext_resumo():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "ext":
 		return render_template("userext_resumo.html")
 	else:
 		return render_template("nouser.html")
@@ -198,7 +202,7 @@ def userext_resumo():
 # Seção de endpoints dedicada ao roteamento de páginas do usuário interno (Imasul).
 @app.route("/usertech")
 def usertech():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "tech":
 		return render_template("usertech.html")
 	else:
 		return render_template("nouser.html")
@@ -209,14 +213,14 @@ def usertech():
 # Seção de endpoints dedicada ao roteamento de páginas do usuário administrador.
 @app.route("/admin")
 def admin():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "admin":
 		return render_template("admin.html")
 	else:
 		return render_template("nouser.html")
 
 @app.route("/admin/historico/")
 def admin_historico():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "admin":
 		data_anoanalise = ver_historico_anoanalise()
 		return render_template("admin_historico.html", data=data_anoanalise)
 	else:
@@ -224,7 +228,7 @@ def admin_historico():
 
 @app.route("/admin/historico/<ano>")
 def admin_historico_processos(ano):
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "admin":
 		data_processos = ver_historico_processos(ano)
 		return render_template("admin_historico_processos.html", data=data_processos)
 	else:
@@ -232,20 +236,20 @@ def admin_historico_processos(ano):
 
 @app.route("/admin/historico/<ano>/<cod_processo>")
 def admin_historico_especifico(ano, cod_processo):
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "admin":
 		#passar dados deste processo a serem mostrados na tela
 		return render_template("admin_historico_especifico.html", cod_processo=cod_processo)
 
 @app.route("/admin/estatisticas")
 def admin_estatisticas():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "admin":
 		return render_template("admin_estatisticas.html")
 	else:
 		return render_template("nouser.html")
 
 @app.route("/admin/configuracoes", methods=["POST", "GET"])
 def admin_configuracoes():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "admin":
 		add_lock = ver_addlock()
 		if request.method == "POST":
 			if str(request.form['action']) == "addlock_change":
@@ -266,7 +270,7 @@ def admin_configuracoes():
 
 @app.route("/admin/usermgmt", methods=["POST", "GET"])
 def admin_usermgmt():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "admin":
 		if request.method == "POST":
 			#adiciona novo usuário
 			if str(request.form['action']) == "add":
@@ -356,7 +360,7 @@ def admin_usermgmt():
 
 @app.route("/admin/atribuir")
 def admin_atribuir():
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "admin":
 		data_anoanalise = ver_historico_anoanalise()
 		return render_template("admin_atribuir.html", data=data_anoanalise)
 	else:
@@ -364,7 +368,7 @@ def admin_atribuir():
 
 @app.route("/admin/atribuir/<ano>", methods=["POST", "GET"])
 def admin_atribuir_processos(ano):
-	if "user" in session:
+	if "user" in session and session.get('usr_type', None) == "admin":
 		check_tecnicos = ver_dados_usuarios("tech")
 		tecnicos = [x[1] for x in check_tecnicos]
 		data_processos = ver_historico_processos(ano)
@@ -415,9 +419,10 @@ def admin_atribuir_processos(ano):
 # Seção dedicada ao roteamento de endpoints de acesso público.
 @app.route("/logout")
 def logout():
-	session.pop("munic", None)
-	session.pop("user", None)
-	session.pop("ano", None)
+	session.pop('munic', None)
+	session.pop('user', None)
+	session.pop('ano', None)
+	session.pop('usr_type', None)
 	return redirect(url_for("home"))
 
 @app.route("/ICMS_indice")

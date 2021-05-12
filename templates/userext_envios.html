@@ -5,6 +5,13 @@
 {% endblock %}
 {% block body %}
 
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
+				<p class="msg__error">{{ message }}</p>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
 <div class ="row container-fluid col-md-5" style="margin:50px 50px 50px 40px;">
 	<div class="" style="margin:10px 20px;">
 		<h5>Adicionar cadastro de ICMS Ecológico para o ano de {{este_ano}}</h5>
@@ -18,7 +25,9 @@
 				<a href="#" data-toggle="popover" title="Aviso" data-trigger="focus" data-content="O requerimento para este ano já foi criado, por favor consultar na tabela abaixo!" class="btn btn-success btn-add d-flex justify-content-center"> + </a>
 			
 			{% else %}
-				<a role="button" href="{{url_for('userext_envios_novo')}}"class="btn btn-success btn-add d-flex justify-content-center"> + </a>
+				<form method="POST">
+					<button class="btn btn-success btn-add d-flex justify-content-center" name="action" type="submit" value="criarprocesso" > + </button>
+				</form>
 
 			{% endif %}
 		{% endif %}

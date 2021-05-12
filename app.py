@@ -148,7 +148,7 @@ def userext():
 	else:
 		return render_template("nouser.html")
 
-@app.route("/userext/envios")
+@app.route("/userext/envios", methods=["POST", "GET"])
 def userext_envios():
 	if "user" in session and session.get('usr_type', None) == "ext":
 		time_check = ctime(time_response.tx_time).split(" ")
@@ -158,23 +158,27 @@ def userext_envios():
 		data = ver_dados_envios()
 		add_lock = ver_addlock() # trava para controlar a partir de quando um novo requerimento de ICMS pode ser feito
 		req_check = sql.cursor.execute("SELECT reqcheck FROM res_urb_data WHERE ano_analise=? AND mun=?", (este_ano), (munic)).fetchone()
+		ano_base = int(este_ano)-1
+
+		if request.method == 'POST':
+			num_processo = ger_num_processo()
+			sql.cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck) VALUES (?, ?, ?, 'True')", (munic), (ano_base), (este_ano))
+			sql.cursor.execute("INSERT INTO envio_preview(mun, anoanalise, numprocesso, reqtipo, situacao, indice) VALUES (?, ?, ?,'UC + RS', 'Novo', '0')",(munic), (este_ano), (num_processo))
+			sql.cnxn.commit()
+			flash("Novo requerimento de ICMS Ecológico criado com sucesso!")
+			data = ver_dados_envios()
+
 		return render_template("userext_envios.html", este_ano=este_ano, data=data, add_lock=add_lock[0], req_check=req_check)
 	else:
 		return render_template("nouser.html")
 
-@app.route("/userext/envios/novo") #refatorar este código novamente usando POST em userext_envios para não precisar deste endpoint
+"""@app.route("/userext/envios/<cod_processo>") #Criar página layout para mostrar os dados do requerimento
 def userext_envios_novo():
 	if "user" in session and session.get('usr_type', None) == "ext":
-		este_ano = session.get('ano', None)
-		munic = session.get('munic', None)
-		ano_base = int(este_ano)-1
-		num_processo = ger_num_processo()
-		sql.cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck) VALUES (?, ?, ?, 'True')", (munic), (ano_base), (este_ano))
-		sql.cursor.execute("INSERT INTO envio_preview(mun, anoanalise, numprocesso, reqtipo, situacao, indice) VALUES (?, ?, ?,'UC + RS', 'Novo', '0')",(munic), (este_ano), (num_processo))
-		sql.cnxn.commit()
+
 		return render_template("userext_envios_novo.html")
 	else:
-		return render_template("nouser.html")
+		return render_template("nouser.html")"""
 
 @app.route("/userext/pendencias")
 def userext_pendencias():

@@ -1,9 +1,10 @@
 meus_testes/
 
+/packages/__pycache__/
+
 Dockerfile
 
 *.pyc
 .cache/
 .pytest_cache/
 
-/packages/__pycache__

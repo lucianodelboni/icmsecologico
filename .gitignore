@@ -6,4 +6,4 @@ Dockerfile
 .cache/
 .pytest_cache/
 
-/packages/__pycache__/
+/packages/__pycache__

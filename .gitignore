@@ -5,3 +5,5 @@ Dockerfile
 *.pyc
 .cache/
 .pytest_cache/
+
+/packages/__pycache__/

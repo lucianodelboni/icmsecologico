@@ -29,6 +29,7 @@ def ger_num_processo():
 	
 	return num_processo
 
+# função para gerar um password contendo maiúsculas, minúsculas e números
 def ger_pwd_random(size):
 	ids = sql.cursor.execute("SELECT id FROM UserAuth WHERE tipo='ext'").fetchall()
 	conv_tup_list =[x[0] for x in ids] # converting the list of tuples into a list
@@ -139,6 +140,8 @@ def home():
 	
 	return render_template("login.html")
 
+
+
 # Seção de endpoints dedicada ao roteamento de páginas do usuário externo (municipio)
 @app.route("/userext")
 def userext():
@@ -162,7 +165,7 @@ def userext_envios():
 
 		if request.method == 'POST':
 			num_processo = ger_num_processo()
-			sql.cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck) VALUES (?, ?, ?, 'True')", (munic), (ano_base), (este_ano))
+			sql.cursor.execute("INSERT INTO res_urb_data(mun, ano_base, ano_analise, reqcheck, numprocesso) VALUES (?, ?, ?, 'True', ?)", (munic), (ano_base), (este_ano), (num_processo))
 			sql.cursor.execute("INSERT INTO envio_preview(mun, anoanalise, numprocesso, reqtipo, situacao, indice) VALUES (?, ?, ?,'UC + RS', 'Novo', '0')",(munic), (este_ano), (num_processo))
 			sql.cnxn.commit()
 			flash("Novo requerimento de ICMS Ecológico criado com sucesso!")
@@ -172,13 +175,14 @@ def userext_envios():
 	else:
 		return render_template("nouser.html")
 
-"""@app.route("/userext/envios/<cod_processo>") #Criar página layout para mostrar os dados do requerimento
-def userext_envios_novo():
+@app.route("/userext/envios/<cod_processo>")
+def processo_parametro1(cod_processo):
 	if "user" in session and session.get('usr_type', None) == "ext":
 
-		return render_template("userext_envios_novo.html")
+
+		return render_template("Test_userext_envios_novo.html", cod_processo=cod_processo)#mudar template quando acabar o teste
 	else:
-		return render_template("nouser.html")"""
+		return render_template("nouser.html")
 
 @app.route("/userext/pendencias")
 def userext_pendencias():
@@ -419,6 +423,9 @@ def admin_atribuir_processos(ano):
 		return render_template("admin_atribuir_processos.html", data=data_processos, tecnicos=tecnicos)
 	else:
 		return render_template("nouser.html")
+
+
+
 
 # Seção dedicada ao roteamento de endpoints de acesso público.
 @app.route("/logout")

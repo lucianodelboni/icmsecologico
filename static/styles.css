@@ -75,8 +75,12 @@
 	width: 70%;
 	margin-top: 20px;
 	border-radius: 15px;
-	background-color: mintcream;
+	background-color: hsl(50, 75%, 97%);
 	padding: 15px 10px;
+}
+
+.divisorias__form_interna{
+	margin-top: 30px;
 }
 
 .itens{

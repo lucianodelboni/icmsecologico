@@ -54,7 +54,6 @@
 
 
 <form method="POST" action="/">
-	
 
 	<!--representação do item 1.1 -->
 
@@ -71,20 +70,24 @@
 				<p>Requerer?</p>
 			</div>
 			<div class="col col-1">
-				<input type="checkbox" unchecked name="1_1PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" >
+				<a data-toggle="collapse" data-target="#ativar1_1">
+					<input type="checkbox" unchecked name="1_1PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
+				</a>
 			</div>
 		</div>
 		<div>
 			<label for="PMGIRS">O último plano apresentado foi:</label>
 			<input type="text" class="col-7" disabled placeholder="{{plano}}"></input>
-			<a type="button" class="btn btn-primary" href="#">Baixar</a>
+			<a type="button" class="btn btn-success" href="#">Baixar</a>
 		</div>
 		<div>
-			<p>Caso deseje anexar outro, clicar no botão abaixo:</p>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal1">
-			  Anexar
-			</button>
-
+			<div id="ativar1_1" class="collapse">
+				<p>Caso deseje atualizar este plano, clique no botão abaixo para substituí-lo:</p>
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal1">
+				  Anexar
+				</button>
+			</div>
+			<!-- parâmetros dos modais do item 1.1 -->
 			<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="#modal2" aria-hidden="true">
 			  <div class="modal-dialog" role="document">
 			    <div class="modal-content">
@@ -100,8 +103,8 @@
 					</div>
 			      </div>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        <button type="button" class="btn btn-primary">Salvar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+			        <button type="button" class="btn btn-success">Salvar</button>
 			      </div>
 			    </div>
 			  </div>
@@ -124,20 +127,21 @@
 				</div>
 				<div class="col col-1">
 					<a data-toggle="collapse" data-target="#ativar1_2_1">
-						<input type="checkbox" unchecked name="1_2_1PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" >
+						<input type="checkbox" unchecked name="1_2_1PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
 					</a>
 				</div>
 			</div>
 			<div id="ativar1_2_1" class="collapse">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+				<p>Adicionar Relatório Fotográfico, conforme modelo <a href="#">disponível</a>:</p> 
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
 				  Anexar
 				</button>
-
+				<!-- parâmetros do modal do item 1.2.1 -->
 				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">Anexar novo PMGIRS</h5>
+				        <h5 class="modal-title" id="exampleModalLabel">Anexar Relatório.</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -146,8 +150,48 @@
 				      	<p>segundo modal!</p>
 				      </div>
 				      <div class="modal-footer">
-				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				        <button type="button" class="btn btn-primary">Salvar</button>
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+				        <button type="button" class="btn btn-success">Salvar</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			</div>
+
+
+			<!-- representação do item 1.2.2 -->
+			<p class="itens divisorias__form_interna" > Item 1.2.2 - Coleta, Transporte e Limpeza Pública</p>
+			<div class="row">
+				<div class="col col-1">
+					<p>Requerer?</p>
+				</div>
+				<div class="col col-1">
+					<a data-toggle="collapse" data-target="#ativar1_2_2">
+						<input type="checkbox" unchecked name="1_2_2PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
+					</a>
+				</div>
+			</div>
+			<div id="ativar1_2_2" class="collapse">
+				<p>Adicionar Relatório Fotográfico, conforme modelo <a href="#">disponível</a>:</p> 
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+				  Anexar
+				</button>
+				<!-- Parâmetros dos modais do item 1.2.2 -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">Anexar Programa de Rotina de Coleta</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				      	<p>terceiro modal!</p>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+				        <button type="button" class="btn btn-success">Salvar</button>
 				      </div>
 				    </div>
 				  </div>
@@ -155,6 +199,9 @@
 			</div>
 		</div>
 	</div>
+		</div>
+	</div>
+
 
 
 </form>

@@ -49,7 +49,7 @@
 			{% for cell in row %}
 			<td class="tbl_c">{{cell}}</td>
 			{% endfor %}
-			<td class="tbl_c"><a href="#">Visualizar</a></td>
+			<td class="tbl_c"><a href="{{ url_for('processo_parametro1', cod_processo=row[1])}}">Visualizar</a></td>
 		</tr>
 		{% endfor %}
 	</table>

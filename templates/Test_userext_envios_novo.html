@@ -55,12 +55,14 @@
 
 <form method="POST" action="/">
 
-	<!--representação do item 1.1 -->
-
+	<!--First page title -->
 	<div class="d-flex justify-content-center" style="margin-top:10px;">
-		<h5> Parâmetro 1 - Plano Municipal de Gestão Integrada de Resíduos Sólidos</h5>
+		<h4> Parâmetro 1 - Plano Municipal de Gestão Integrada de Resíduos Sólidos</h4>
 	</div>
 
+	<p class="d-flex justify-content-center form__subtitle">Observação: Todos os documentos apresentados devem estar preenchidos, datados e assinados, com exceção do PMGIRS.</p>
+
+	<!--representação do item 1.1 -->
 	<div class="container-fluid divisorias__form">
 		<div>
 			<p class="itens"> Item 1.1 - Plano Municipal de Gestão Integrada de Resíduos Sólidos</p>
@@ -70,9 +72,7 @@
 				<p>Requerer?</p>
 			</div>
 			<div class="col col-1">
-				<a data-toggle="collapse" data-target="#ativar1_1">
 					<input type="checkbox" unchecked name="1_1PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
-				</a>
 			</div>
 		</div>
 		<div>
@@ -81,18 +81,15 @@
 			<a type="button" class="btn btn-success" href="#">Baixar</a>
 		</div>
 		<div>
-			<div id="ativar1_1" class="collapse">
-				<p>Caso deseje atualizar este plano, clique no botão abaixo para substituí-lo:</p>
-				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal1">
-				  Anexar
-				</button>
-			</div>
+			<p>Caso deseje atualizar este plano, clique no botão abaixo para substituí-lo:</p>
+			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal1">Anexar</button>
+
 			<!-- parâmetros dos modais do item 1.1 -->
-			<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="#modal2" aria-hidden="true">
+			<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="#modal1_label" aria-hidden="true">
 			  <div class="modal-dialog" role="document">
 			    <div class="modal-content">
 			      <div class="modal-header">
-			        <h5 class="modal-title" id="modal2">Anexar novo PMGIRS</h5>
+			        <h5 class="modal-title" id="modal1_label">Anexar novo PMGIRS</h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true">&times;</span>
 			        </button>
@@ -110,15 +107,15 @@
 			  </div>
 			</div>
 		</div>	
-
 	</div>
 	
 
-	<!--representação do item 1.2.1 -->
+	<!--representação do item 1.2 -->
 	<div class="container-fluid divisorias__form">
 		<div>
 			<p class="itens"> Item 1.2 - Execução do Plano Municipal de Gestão Integrada de Resíduos Sólidos</p>
 		</div>
+		<!--representação do item 1.2.1 -->
 		<div style="margin-left:20px;">
 			<p class="itens"> Item 1.2.1 - Acondicionamento</p>
 			<div class="row">
@@ -126,37 +123,35 @@
 					<p>Requerer?</p>
 				</div>
 				<div class="col col-1">
-					<a data-toggle="collapse" data-target="#ativar1_2_1">
-						<input type="checkbox" unchecked name="1_2_1PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
-					</a>
+					<input type="checkbox" unchecked name="1_2_1PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
 				</div>
 			</div>
-			<div id="ativar1_2_1" class="collapse">
-				<p>Adicionar Relatório Fotográfico, conforme modelo <a href="#">disponível</a>:</p> 
-				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-				  Anexar
-				</button>
-				<!-- parâmetros do modal do item 1.2.1 -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">Anexar Relatório.</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div class="modal-body">
-				      	<p>segundo modal!</p>
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-				        <button type="button" class="btn btn-success">Salvar</button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
+
+			<p>Adicionar Relatório Fotográfico, conforme modelo <a href="#">disponível</a>:</p> 
+			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal2">
+			  Anexar
+			</button>
+			<!-- parâmetros do modal do item 1.2.1 -->
+			<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="#modal2_label" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="modal2_label">Anexar Relatório.</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      	<p>segundo modal!</p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+			        <button type="button" class="btn btn-success">Salvar</button>
+			      </div>
+			    </div>
+			  </div>
 			</div>
+
 
 
 			<!-- representação do item 1.2.2 -->
@@ -166,22 +161,24 @@
 					<p>Requerer?</p>
 				</div>
 				<div class="col col-1">
-					<a data-toggle="collapse" data-target="#ativar1_2_2">
-						<input type="checkbox" unchecked name="1_2_2PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
-					</a>
+					<input type="checkbox" unchecked name="1_2_2PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
 				</div>
 			</div>
-			<div id="ativar1_2_2" class="collapse">
-				<p>Adicionar Relatório Fotográfico, conforme modelo <a href="#">disponível</a>:</p> 
-				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+				<span>Quem executa a coleta convencional no Município?</span><br>
+				<input type="radio" name="1.2.2_checkbox_coletaconv" value="1.2.2_cc_prefmun">Prefeitura Municipal</input><br>
+				<input type="radio" name="1.2.2_checkbox_coletaconv" value="1.2.2_cc_empcontr">Empresa Contratada</input><br>
+				<br>
+
+				<p>Adicionar o Programa de Rotina de Coleta, Transporte e Limpeza Pública, conforme modelo <a href="#">disponível</a>:</p> 
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal3">
 				  Anexar
 				</button>
 				<!-- Parâmetros dos modais do item 1.2.2 -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="#modal3_label" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">Anexar Programa de Rotina de Coleta</h5>
+				        <h5 class="modal-title" id="modal3_label">Anexar Programa de Rotina de Coleta, Transporte e Limpeza Pública</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -196,15 +193,13 @@
 				    </div>
 				  </div>
 				</div>
-			</div>
+
 		</div>
 	</div>
-		</div>
-	</div>
-
-
 
 </form>
+<br>
+<br>
 
 
 

@@ -71,16 +71,23 @@
 }
 
 .divisorias__form{
-	border: 1px solid darkgreen;
+	border: 1px solid silver;
 	width: 70%;
 	margin-top: 20px;
 	border-radius: 15px;
-	background-color: hsl(50, 75%, 97%);
+	background-color: ivory;
 	padding: 15px 10px;
+	box-shadow: 5px 2px 10px lightgray;
 }
 
 .divisorias__form_interna{
 	margin-top: 30px;
+}
+
+.form__subtitle{
+	font-style: italic;
+	color: red;
+	font-weight: bold;
 }
 
 .itens{

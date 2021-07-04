@@ -118,14 +118,14 @@ def home():
 			PasswordData = sql.cursor.execute("SELECT password FROM UserAuth WHERE username=?", (username)).fetchone()
 			TypeofUser	= sql.cursor.execute("SELECT tipo FROM UserAuth WHERE username=?", (username)).fetchone()
 
-			session["usr_type"] = str(TypeofUser[0])
-			print (session.get('usr_type'))
-
 			#Caso o usuario nao esteja na base de dados, redireciona para uma pagina de login falhou
 			if UsernameData == None or PasswordData == None:
 				return render_template("loginfail.html")
 			#Caso contrário, realiza o login na página certa
 			else:
+				session["usr_type"] = str(TypeofUser[0])
+				print (session.get('usr_type'))
+				
 				if municipio != None:
 					session["munic"] = str(municipio[0])
 

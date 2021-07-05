@@ -81,7 +81,12 @@
 }
 
 .divisorias__form_interna{
-	margin-top: 30px;
+	margin-top: 50px;
+}
+
+.divisorias__subinternas{
+	margin-top: 20px;
+	margin-bottom: 5px;
 }
 
 .form__subtitle{

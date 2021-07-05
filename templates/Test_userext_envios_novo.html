@@ -164,12 +164,17 @@
 					<input type="checkbox" unchecked name="1_2_2PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
 				</div>
 			</div>
-				<span>Quem executa a coleta convencional no Município?</span><br>
+				<p class="divisorias__subinternas">Quem executa a coleta convencional no Município?</p>
 				<input type="radio" name="1.2.2_checkbox_coletaconv" value="1.2.2_cc_prefmun">Prefeitura Municipal</input><br>
 				<input type="radio" name="1.2.2_checkbox_coletaconv" value="1.2.2_cc_empcontr">Empresa Contratada</input><br>
-				<br>
+				
 
-				<p>Adicionar o Programa de Rotina de Coleta, Transporte e Limpeza Pública, conforme modelo <a href="#">disponível</a>:</p> 
+				<p class="divisorias__subinternas">Quem executa a limpeza pública no Município?</p>
+				<input type="radio" name="1.2.2_checkbox_limppublica" value="1.2.2_lp_prefmun">Prefeitura Municipal</input><br>
+				<input type="radio" name="1.2.2_checkbox_limppublica" value="1.2.2_lp_empcontr">Empresa Contratada</input><br>
+				
+
+				<p class="divisorias__subinternas">Adicionar o Programa de Rotina de Coleta, Transporte e Limpeza Pública, conforme modelo <a href="#">disponível</a>:</p> 
 				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal3">
 				  Anexar
 				</button>
@@ -178,7 +183,7 @@
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="modal3_label">Anexar Programa de Rotina de Coleta, Transporte e Limpeza Pública</h5>
+				        <h5 class="modal-title" id="modal3_label">Anexar Programa de Rotina de Coleta, Transporte e Limpeza Pública.</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -192,6 +197,45 @@
 				      </div>
 				    </div>
 				  </div>
+				</div>
+
+
+				<p class="divisorias__subinternas">Adicionar relatório fotográfico da realização da limpeza pública, conforme modelo <a href="#">disponível</a>:</p> 
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal4">
+				  Anexar
+				</button>
+				<!-- Parâmetros dos modais do item 1.2.2 -->
+				<div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="#modal4_label" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="modal4_label">Anexar Relatório Fotográfico da realização da limpeza pública.</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				      	<p>quarto modal!</p>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+				        <button type="button" class="btn btn-success">Salvar</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+
+
+
+			<!-- Representação da seção 1.2.3 -->
+			<p class="itens divisorias__form_interna" > Item 1.2.3 - Tratamento</p>
+				<div class="row">
+					<div class="col col-1">
+						<p>Requerer?</p>
+					</div>
+					<div class="col col-1">
+						<input type="checkbox" unchecked name="1_2_2PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
+					</div>
 				</div>
 
 		</div>

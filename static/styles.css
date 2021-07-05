@@ -32,6 +32,7 @@
 	text-align: center;
 }
 
+/* Formatações básicas de margem e padding para padronização do estilo */
 .mg{
 	margin: 50px;
 	
@@ -42,6 +43,7 @@
 
 }
 
+/* Estilo do botão "+" de criar novo formulário no login de usuário externo */
 .btn-add{
 	font-size:20px;
 	font-weight: bold;
@@ -49,7 +51,7 @@
 }
 
 
-/* Estilos das tabelas de consulta */
+/* Estilos das classes ligadas às tabelas de consulta */
 .tbl_h{
 	color: white;
 	border: 1px solid #dddddd;
@@ -100,7 +102,6 @@
 	color: red;
 	font-weight: bold;
 }
-
 
 .itens{
 	font-weight: bold;

@@ -48,6 +48,8 @@
 	width:120%;
 }
 
+
+/* Estilos das tabelas de consulta */
 .tbl_h{
 	color: white;
 	border: 1px solid #dddddd;
@@ -70,7 +72,8 @@
 	overflow-x: auto;
 }
 
-.divisorias__form{
+/* Parâmetros para a formatação de uma seção contida em um container */
+.divisorias__form{ 
 	border: 1px solid silver;
 	width: 70%;
 	margin-top: 20px;
@@ -80,20 +83,24 @@
 	box-shadow: 5px 2px 10px lightgray;
 }
 
-.divisorias__form_interna{
+/* Cria espaçamento entre duas subseções nos formulários ex: 1.2.3 -> 1.2.4*/
+.divisorias__form_interna{  
 	margin-top: 50px;
 }
 
-.divisorias__subinternas{
+/* Cria um espaçamento entre os itens do formulário e deve ser utilizado entre itens de uma subseção ex: 1.2.4. pergunta 1 -> pergunta2 */
+.divisorias__subinternas{ 
 	margin-top: 20px;
 	margin-bottom: 5px;
 }
 
+/* Formatatação para estilo do subtítulo do formulário trabalhado */
 .form__subtitle{
 	font-style: italic;
 	color: red;
 	font-weight: bold;
 }
+
 
 .itens{
 	font-weight: bold;

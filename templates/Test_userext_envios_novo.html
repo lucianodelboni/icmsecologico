@@ -164,6 +164,7 @@
 					<input type="checkbox" unchecked name="1_2_2PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
 				</div>
 			</div>
+
 				<p class="divisorias__subinternas">Quem executa a coleta convencional no Município?</p>
 				<input type="radio" name="1.2.2_checkbox_coletaconv" value="1.2.2_cc_prefmun">Prefeitura Municipal</input><br>
 				<input type="radio" name="1.2.2_checkbox_coletaconv" value="1.2.2_cc_empcontr">Empresa Contratada</input><br>
@@ -237,6 +238,43 @@
 						<input type="checkbox" unchecked name="1_2_2PMGIRS" data-toggle="toggle" data-size="xs" data-on="Sim" data-off="Não" data-onstyle="success">
 					</div>
 				</div>
+
+			<p class="divisorias__subinternas">Quem executa o tratamento?</p>
+			<input type="radio" name="1.2.3_checkbox_trat" value="1.2.3_trat_prefmun">Prefeitura Municipal</input><br>
+			<input type="radio" name="1.2.3_checkbox_trat" value="1.2.3_trat_empcontr">Empresa Contratada</input><br>
+
+			<p class="divisorias__subinternas">O Município realiza a compostagem dos resíduos orgânicos?</p>
+			<input type="radio" name="1.2.3_checkbox_verif_compost" value="1.2.3_compost_sim">Sim</input><br>
+			<input type="radio" name="1.2.3_checkbox_verif_compost" value="1.2.3_compost_nao">Não</input><br>
+
+			<p class="divisorias__subinternas">Quem executa a compostagem?</p>
+			<input type="radio" name="1.2.3_checkbox_compost" value="1.2.3_compost_prefmun">Prefeitura Municipal</input><br>
+			<input type="radio" name="1.2.3_checkbox_compost" value="1.2.3_compost_empcontr">Empresa Contratada</input><br>
+
+			<p class="divisorias__subinternas">Adicionar Relatório Fotográfico, conforme modelo <a href="#">disponível</a>:</p> 
+			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal2">
+			  Anexar
+			</button>
+			<!-- parâmetros do modal do item 1.2.1 -->
+			<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="#modal2_label" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="modal2_label">Anexar Relatório.</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      	<p>quinto modal!</p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+			        <button type="button" class="btn btn-success">Salvar</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 
 		</div>
 	</div>
